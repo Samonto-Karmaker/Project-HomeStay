@@ -1,9 +1,12 @@
+import React from 'react';
 import './App.css';
 
-function App() {
+import MainComponent from "./views/MainComponent";
+
+const App = () => {
   return (
     <div className="App">
-      <h1>React App</h1>
+      <MainComponent />
     </div>
   );
 }
