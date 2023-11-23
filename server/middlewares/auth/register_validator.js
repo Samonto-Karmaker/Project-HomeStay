@@ -44,3 +44,22 @@ const registerValidator = [
         .isStrongPassword()
         .withMessage('PasswordError: Password must be at least 8 characters long and should contain at least 1 lowercase, 1 uppercase, 1 number and 1 symbol'),
 ]
+
+//Register validator handler
+const registerValidatorHandler = (req, res, next) => {
+    const errors = validationResult(req);
+    const mappedErrors = errors.mapped();
+    if(Object.keys(mappedErrors).length === 0){
+        next();
+    }
+    else{
+        res.status(500).json({
+            errors: mappedErrors,
+        });
+    }
+}
+
+module.exports = {
+    registerValidator,
+    registerValidatorHandler,
+}
