@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 
 //Internal Imports
+const authRouter = require('./routes/authRouter');
 
 //Initialization
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //Routing
+app.use("/", authRouter)
 
 //Error Handler
 //Default Error Handler
