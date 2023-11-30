@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -5,8 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col, Button } from "react-bootstrap";
+import Register from '../body/Register';
 
 const NavBar = () => {
+
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container style={{ padding: "10px" }}>
@@ -60,9 +65,14 @@ const NavBar = () => {
                 borderWidth: "1px",
                 color: "red",
               }}
+              onClick={() => setShowRegisterModal(true)}
             >
               <FontAwesomeIcon icon={faUser} />
             </Button>
+            <Register
+              show={showRegisterModal}
+              onHide={() => setShowRegisterModal(false)}
+            />
           </Nav>
         </Navbar.Collapse>
       </Container>
