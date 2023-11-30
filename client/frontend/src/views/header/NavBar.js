@@ -37,19 +37,19 @@ const NavBar = () => {
           >
             <Row className="align-items-center" style={{ padding: "5px", color: "grey" }}>
               <Col>
-                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link className='NavBtn' href="#home">Home</Nav.Link>
               </Col>
               <Col xs="auto">
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link href="#booking">Book Your Next Hideout</Nav.Link>
+                <Nav.Link className='NavBtn' href="#booking">Book Your Next Hideout</Nav.Link>
               </Col>
               <Col xs="auto">
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link href="#add-hideout">
+                <Nav.Link className='NavBtn' href="#add-hideout">
                   Make Your Home A Hideout
                 </Nav.Link>
               </Col>
@@ -57,13 +57,18 @@ const NavBar = () => {
           </Container>
           <Nav>
             <Button
+              className='NavUserBtn'
               style={{
-                marginLeft: "10px",
+                margin: "10px",
                 backgroundColor: "#f8f9fa",
                 borderColor: "#f8f9fa",
                 borderStyle: "solid",
                 borderWidth: "1px",
                 color: "red",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
               }}
               onClick={() => setShowRegisterModal(true)}
             >
