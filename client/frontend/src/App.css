@@ -10,3 +10,9 @@
 .NavBtn:hover, .NavBtn:active {
   color: red !important;
 }
+
+.RegularBtn:hover, .RegularBtn:active {
+  background-color: white !important;
+  color: red !important;
+  border-color: red !important;
+}

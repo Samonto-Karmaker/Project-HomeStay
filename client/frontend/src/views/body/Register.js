@@ -8,11 +8,13 @@ const Register = props => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            style={{color: "black"}}
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Register
+                <Modal.Title 
+                    id="contained-modal-title-vcenter"
+                    style={{ color: "red" }}
+                >
+                    <b>Register</b>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -20,8 +22,13 @@ const Register = props => {
             </Modal.Body>
             <Modal.Footer>
                 <Button 
-                    variant="secondary"
+                    className='RegularBtn'
                     onClick={props.onHide}
+                    style={{
+                        backgroundColor: "red", 
+                        color: "white",
+                        borderColor: "white",
+                    }}
                 >
                     Close
                 </Button>
