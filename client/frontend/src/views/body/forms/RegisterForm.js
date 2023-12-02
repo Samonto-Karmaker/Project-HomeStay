@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
-const RegisterForm = () => {
+const RegisterForm = props => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -10,13 +10,76 @@ const RegisterForm = () => {
         confirmPassword: "",
     });
 
+    const [nameError, setNameError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [mobileError, setMobileError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const removeErrors = () => {
+        setNameError("");
+        setEmailError("");
+        setMobileError("");
+        setPasswordError("");
+        setConfirmPasswordError("");
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your form submission logic here
+
+        removeErrors();
+        
+        if (formData.password !== formData.confirmPassword) {
+            setConfirmPasswordError("Passwords do not match");
+        }
+        else {
+            try{
+                const { name, email, mobile, password } = formData;
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, mobile, password }),
+                });
+                const result = await response.json();
+                if(result.success){
+                    removeErrors();
+                    window.alert("Registered successfully! Please login to continue");
+                    setTimeout(() => {
+                        props.closeModal();
+                    }, 1000)
+                }
+                else if(result.status === 400){
+                    window.alert("User already exists");
+                }
+                else{
+                    Object.keys(result.errors).forEach((field) => {
+                        if (field === "name") {
+                            setNameError(result.errors[field].msg);
+                        }
+                        if (field === "email") {
+                            setEmailError(result.errors[field].msg);
+                        }
+                        if (field === "mobile") {
+                            setMobileError(result.errors[field].msg);
+                        }
+                        if (field === "password") {
+                            setPasswordError(result.errors[field].msg);
+                        }
+                    });
+                }
+            }
+            catch(err){
+                console.log(err);
+                window.alert("Something went wrong");
+            }
+        }
+
     };
 
     return (
@@ -31,6 +94,7 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     required
                 />
+                {nameError && (<p style={{ color: "red" }}>{nameError}</p>)}
             </Form.Group>
 
             <Form.Group controlId="email">
@@ -42,6 +106,7 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     required
                 />
+                {emailError && (<p style={{ color: "red" }}>{emailError}</p>)}
             </Form.Group>
 
             <Form.Group controlId="mobile">
@@ -53,6 +118,7 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     required
                 />
+                {mobileError && (<p style={{ color: "red" }}>{mobileError}</p>)}
             </Form.Group>
 
             <Form.Group controlId="password">
@@ -64,6 +130,7 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     required
                 />
+                {passwordError && (<p style={{ color: "red" }}>{passwordError}</p>)}
             </Form.Group>
 
             <Form.Group controlId="confirmPassword">
@@ -75,6 +142,7 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     required
                 />
+                {confirmPasswordError && (<p style={{ color: "red" }}>{confirmPasswordError}</p>)}
             </Form.Group>
 
             <Button 

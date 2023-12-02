@@ -20,7 +20,7 @@ const Register = props => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <RegisterForm />
+                <RegisterForm closeModal = {props.onHide}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button 
