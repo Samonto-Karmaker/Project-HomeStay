@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
+import RegisterForm from '../body/forms/RegisterForm';
+
 const Register = props => {
     return (
         <Modal
@@ -18,7 +20,7 @@ const Register = props => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Register</p>
+                <RegisterForm />
             </Modal.Body>
             <Modal.Footer>
                 <Button 
