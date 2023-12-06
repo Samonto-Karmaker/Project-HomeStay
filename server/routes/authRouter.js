@@ -2,7 +2,7 @@
 const express = require("express")
 
 //Internal Imports
-const {register} = require("../controllers/authController")
+const {register, login, logout} = require("../controllers/authController")
 const {registerValidator, registerValidatorHandler} = require("../middlewares/auth/register_validator")
 
 //Initializing Router
