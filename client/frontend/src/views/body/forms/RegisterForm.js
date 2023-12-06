@@ -39,7 +39,7 @@ const RegisterForm = props => {
         else {
             try{
                 const { name, email, mobile, password } = formData;
-                const response = await fetch('/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

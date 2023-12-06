@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //Routing
-app.use("/", authRouter)
+app.use("/api", authRouter)
 
 //Error Handler
 //Default Error Handler
