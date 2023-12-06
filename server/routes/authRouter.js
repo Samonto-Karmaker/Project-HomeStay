@@ -16,4 +16,10 @@ router.post(
     register
 )
 
+//Login
+router.post("/login", login)
+
+//Logout
+router.delete("/logout", logout)
+
 module.exports = router
