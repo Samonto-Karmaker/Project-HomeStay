@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import RegisterForm from '../body/forms/RegisterForm';
+import RegisterForm from './forms/RegisterForm';
+import LogInForm from './forms/LogInForm';
 
-const Register = props => {
+const BaseModal = props => {
     return (
         <Modal
             {...props}
@@ -16,11 +17,11 @@ const Register = props => {
                     id="contained-modal-title-vcenter"
                     style={{ color: "red" }}
                 >
-                    <b>Register</b>
+                    <b>Log In</b>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <RegisterForm closeModal = {props.onHide}/>
+                <LogInForm closeModal={props.onHide} />
             </Modal.Body>
             <Modal.Footer>
                 <Button 
@@ -39,4 +40,4 @@ const Register = props => {
     );
 }
 
-export default Register;
+export default BaseModal;

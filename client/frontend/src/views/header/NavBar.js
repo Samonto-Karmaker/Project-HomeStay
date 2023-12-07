@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col, Button } from "react-bootstrap";
-import Register from '../body/Register';
+import BaseModal from '../body/BaseModal';
 
 const NavBar = () => {
 
@@ -74,7 +74,7 @@ const NavBar = () => {
             >
               <FontAwesomeIcon icon={faUser} />
             </Button>
-            <Register
+            <BaseModal
               show={showRegisterModal}
               onHide={() => setShowRegisterModal(false)}
             />
