@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import {UserContext} from "../../../components/context/UserContext";
 import {Form, Button} from "react-bootstrap";
 
 const LogInForm = props => {
 
-    let userData = "";
+    const {setUser} = useContext(UserContext);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -38,8 +39,7 @@ const LogInForm = props => {
             });
             const result = await response.json();
             if(result.success){
-                userData = result.loggedInUser;
-                console.log(userData);
+                setUser(result.loggedInUser);
                 removeErrors();
                 window.alert("Logged in successfully!");
                 setTimeout(() => {
