@@ -127,8 +127,26 @@ const logout = (req, res, next) => {
     }
 }
 
+//Send user info to authenticated user
+const getAuthUser = (req, res, next) => {
+    try{
+        res.status(200).json({
+            success: true,
+            message: 'User is logged in',
+            loggedInUser: req.user,
+        });
+    }
+    catch(error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
-    logout
+    logout,
+    getAuthUser,
 }
