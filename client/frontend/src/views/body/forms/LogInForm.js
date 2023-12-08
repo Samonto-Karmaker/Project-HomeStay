@@ -14,6 +14,11 @@ const LogInForm = props => {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
+    const openRegister = () => {
+        props.closeModal();
+        props.toggle();
+    }
+
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
@@ -71,7 +76,7 @@ const LogInForm = props => {
                 <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Enter email"
+                    placeholder="abc@xyz.com"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -84,7 +89,7 @@ const LogInForm = props => {
                 <Form.Control
                     type="password"
                     name="password"
-                    placeholder="Enter password"
+                    placeholder="********"
                     value={formData.password}
                     onChange={handleChange}
                     required
@@ -105,6 +110,16 @@ const LogInForm = props => {
             >
                 Log In
             </Button>
+            <p 
+                style={{ 
+                    paddingTop: "5px", 
+                    paddingBottom: "5px", 
+                    color: "gray" 
+                    }}
+            >
+                Don't have an account?
+            </p>
+            <p style={{ color: "red", cursor: "pointer"}} onClick={openRegister}>Register</p>
         </Form>
     );
 }

@@ -1,17 +1,71 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Button } from "react-bootstrap";
-import BaseModal from '../body/BaseModal';
+import BaseModal from "../body/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
 
 const NavBar = () => {
-  const {User} = useContext(UserContext);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const { User } = useContext(UserContext);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const handleModal = type => {
+    setModalType(type);
+    setShowModal(true);
+  }
+
+  const handleLogIn = () => {
+    if (User) {
+      return (
+        <>
+          <Button
+            className="NavUserBtn"
+            style={{
+              margin: "10px",
+              backgroundColor: "#f8f9fa",
+              borderColor: "#f8f9fa",
+              borderStyle: "solid",
+              borderWidth: "1px",
+              color: "red",
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <FontAwesomeIcon icon={faUser} />
+          </Button>
+        </>
+      );
+    }
+    return (
+      <>
+        <Button
+          className="NavUserBtn"
+          style={{
+            margin: "10px",
+            backgroundColor: "#f8f9fa",
+            borderColor: "#f8f9fa",
+            borderStyle: "solid",
+            borderWidth: "1px",
+            width: "100px",
+            height: "40px",
+            color: "red",
+            borderRadius: "20px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+          }}
+          onClick={() => handleModal("Log In")}
+        >
+          Login
+        </Button>
+      </>
+    );
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -26,7 +80,7 @@ const NavBar = () => {
           <b>AirBnB Clone</b>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" style={{padding: "10px"}}>
+        <Navbar.Collapse id="responsive-navbar-nav" style={{ padding: "10px" }}>
           <Container
             fluid
             style={{
@@ -36,49 +90,40 @@ const NavBar = () => {
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <Row className="align-items-center" style={{ padding: "5px", color: "grey" }}>
+            <Row
+              className="align-items-center"
+              style={{ padding: "5px", color: "grey" }}
+            >
               <Col>
-                <Nav.Link className='NavBtn' href="#home">Home</Nav.Link>
+                <Nav.Link className="NavBtn" href="#home">
+                  Home
+                </Nav.Link>
               </Col>
               <Col xs="auto">
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link className='NavBtn' href="#booking">Book Your Next Hideout</Nav.Link>
+                <Nav.Link className="NavBtn" href="#booking">
+                  Book Place
+                </Nav.Link>
               </Col>
               <Col xs="auto">
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link className='NavBtn' href="#add-hideout">
-                  Make Your Home A Hideout
+                <Nav.Link className="NavBtn" href="#add-hideout">
+                  Add Place
                 </Nav.Link>
               </Col>
             </Row>
           </Container>
           <Nav>
-            <Button
-              className='NavUserBtn'
-              style={{
-                margin: "10px",
-                backgroundColor: "#f8f9fa",
-                borderColor: "#f8f9fa",
-                borderStyle: "solid",
-                borderWidth: "1px",
-                color: "red",
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-              }}
-              onClick={() => setShowRegisterModal(true)}
-            >
-              <FontAwesomeIcon icon={faUser} />
-              {User ? console.log(User) : console.log("No User")}
-            </Button>
+            {handleLogIn()}
             <BaseModal
-              show={showRegisterModal}
-              onHide={() => setShowRegisterModal(false)}
+              modal = {modalType}
+              toggle = {() => handleModal("Register")}
+              show={showModal}
+              onHide={() => setShowModal(false)}
             />
           </Nav>
         </Navbar.Collapse>

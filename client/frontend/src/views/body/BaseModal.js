@@ -17,11 +17,14 @@ const BaseModal = props => {
                     id="contained-modal-title-vcenter"
                     style={{ color: "red" }}
                 >
-                    <b>Log In</b>
+                    {props.modal === "Register" ? "Register" : "Log In"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <LogInForm closeModal={props.onHide} />
+                {props.modal === "Register" ? 
+                    <RegisterForm closeModal = {props.onHide} /> : 
+                    <LogInForm closeModal = {props.onHide} toggle = {props.toggle}/>
+                }
             </Modal.Body>
             <Modal.Footer>
                 <Button 

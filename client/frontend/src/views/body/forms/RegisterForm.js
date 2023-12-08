@@ -91,6 +91,7 @@ const RegisterForm = props => {
                     type="text"
                     name="name"
                     value={formData.name}
+                    placeholder="John Doe"
                     onChange={handleChange}
                     required
                 />
@@ -103,6 +104,7 @@ const RegisterForm = props => {
                     type="email"
                     name="email"
                     value={formData.email}
+                    placeholder="abc@xyz.com"
                     onChange={handleChange}
                     required
                 />
@@ -115,6 +117,7 @@ const RegisterForm = props => {
                     type="text"
                     name="mobile"
                     value={formData.mobile}
+                    placeholder="0123456789"
                     onChange={handleChange}
                     required
                 />
@@ -127,6 +130,7 @@ const RegisterForm = props => {
                     type="password"
                     name="password"
                     value={formData.password}
+                    placeholder="********"
                     onChange={handleChange}
                     required
                 />
@@ -139,6 +143,7 @@ const RegisterForm = props => {
                     type="password"
                     name="confirmPassword"
                     value={formData.confirmPassword}
+                    placeholder="********"
                     onChange={handleChange}
                     required
                 />
