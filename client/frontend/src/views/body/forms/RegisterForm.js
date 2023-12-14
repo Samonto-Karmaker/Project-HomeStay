@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 
-const RegisterForm = props => {
+const RegisterForm = ({closeModal}) => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -52,7 +52,7 @@ const RegisterForm = props => {
                     removeErrors();
                     window.alert("Registered successfully! Please login to continue");
                     setTimeout(() => {
-                        props.closeModal();
+                        closeModal();
                     }, 1000)
                 }
                 else if(result.status === 400){

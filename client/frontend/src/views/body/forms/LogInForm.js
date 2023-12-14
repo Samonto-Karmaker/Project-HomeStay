@@ -3,7 +3,7 @@ import {UserContext} from "../../../components/context/UserContext";
 import {Form} from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 
-const LogInForm = props => {
+const LogInForm = ({closeModal, toggle}) => {
 
     const {setUser} = useContext(UserContext);
 
@@ -16,8 +16,8 @@ const LogInForm = props => {
     const [passwordError, setPasswordError] = useState("");
 
     const openRegister = () => {
-        props.closeModal();
-        props.toggle();
+        closeModal();
+        toggle();
     }
 
     const handleChange = (e) => {
@@ -49,7 +49,7 @@ const LogInForm = props => {
                 removeErrors();
                 window.alert("Logged in successfully!");
                 setTimeout(() => {
-                    props.closeModal();
+                    closeModal();
                 }, 1000)
             }
             else{

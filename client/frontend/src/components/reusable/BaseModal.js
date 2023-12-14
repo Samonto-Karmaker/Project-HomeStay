@@ -4,10 +4,11 @@ import { Button, Modal } from 'react-bootstrap';
 import RegisterForm from '../../views/body/forms/RegisterForm';
 import LogInForm from '../../views/body/forms/LogInForm';
 
-const BaseModal = props => {
+const BaseModal = ({modal, toggle, show, onHide}) => {
     return (
         <Modal
-            {...props}
+            show={show}
+            onHide={onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -17,19 +18,19 @@ const BaseModal = props => {
                     id="contained-modal-title-vcenter"
                     style={{ color: "red" }}
                 >
-                    {props.modal === "Register" ? "Register" : "Log In"}
+                    {modal === "Register" ? "Register" : "Log In"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {props.modal === "Register" ? 
-                    <RegisterForm closeModal = {props.onHide} /> : 
-                    <LogInForm closeModal = {props.onHide} toggle = {props.toggle}/>
+                {modal === "Register" ? 
+                    <RegisterForm closeModal = {onHide} /> : 
+                    <LogInForm closeModal = {onHide} toggle = {toggle}/>
                 }
             </Modal.Body>
             <Modal.Footer>
                 <Button 
                     className='RegularBtn'
-                    onClick={props.onHide}
+                    onClick={onHide}
                     style={{
                         backgroundColor: "red", 
                         color: "white",
