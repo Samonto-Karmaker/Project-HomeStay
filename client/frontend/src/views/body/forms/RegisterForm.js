@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const RegisterForm = props => {
     const [formData, setFormData] = useState({
@@ -150,19 +151,8 @@ const RegisterForm = props => {
                 {confirmPasswordError && (<p style={{ color: "red" }}>{confirmPasswordError}</p>)}
             </Form.Group>
 
-            <Button 
-                className="RegularBtn" 
-                type="submit"
-                style={{
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    backgroundColor: "red", 
-                    color: "white",
-                    borderColor: "white",
-                }}
-            >
-                Register
-            </Button>
+            <RegularBtn type="submit">Register</RegularBtn>
+
         </Form>
     );
 };

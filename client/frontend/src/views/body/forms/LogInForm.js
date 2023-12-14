@@ -1,6 +1,7 @@
 import React, {useState, useContext} from "react";
 import {UserContext} from "../../../components/context/UserContext";
-import {Form, Button} from "react-bootstrap";
+import {Form} from "react-bootstrap";
+import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const LogInForm = props => {
 
@@ -97,19 +98,7 @@ const LogInForm = props => {
                 <Form.Text className="text-danger">{passwordError}</Form.Text>
             </Form.Group>
 
-            <Button 
-                className="RegularBtn" 
-                type="submit"
-                style={{
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    backgroundColor: "red", 
-                    color: "white",
-                    borderColor: "white",
-                }}
-            >
-                Log In
-            </Button>
+            <RegularBtn type="submit">Log In</RegularBtn>
             <p 
                 style={{ 
                     paddingTop: "5px", 
