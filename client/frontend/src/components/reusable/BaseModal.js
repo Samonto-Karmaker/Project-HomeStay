@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import RegisterForm from './forms/RegisterForm';
-import LogInForm from './forms/LogInForm';
+import RegisterForm from '../../views/body/forms/RegisterForm';
+import LogInForm from '../../views/body/forms/LogInForm';
 
 const BaseModal = props => {
     return (

@@ -5,8 +5,8 @@ import Navbar from "react-bootstrap/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { Row, Col, Button } from "react-bootstrap";
-import BaseModal from "../body/BaseModal";
+import { Row, Col } from "react-bootstrap";
+import BaseModal from "../../components/reusable/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
 import NavUserBtn from "../../components/reusable/NavUserBtn";
 
