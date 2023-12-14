@@ -8,6 +8,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Button } from "react-bootstrap";
 import BaseModal from "../body/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
+import NavUserBtn from "../../components/reusable/NavUserBtn";
 
 const NavBar = () => {
   const { User } = useContext(UserContext);
@@ -23,46 +24,20 @@ const NavBar = () => {
     if (User) {
       return (
         <>
-          <Button
-            className="NavUserBtn"
-            style={{
-              margin: "10px",
-              backgroundColor: "#f8f9fa",
-              borderColor: "#f8f9fa",
-              borderStyle: "solid",
-              borderWidth: "1px",
-              color: "red",
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-            }}
-          >
+          <NavUserBtn>
             <FontAwesomeIcon icon={faUser} />
-          </Button>
+          </NavUserBtn>
         </>
       );
     }
     return (
       <>
-        <Button
-          className="NavUserBtn"
-          style={{
-            margin: "10px",
-            backgroundColor: "#f8f9fa",
-            borderColor: "#f8f9fa",
-            borderStyle: "solid",
-            borderWidth: "1px",
-            width: "100px",
-            height: "40px",
-            color: "red",
-            borderRadius: "20px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-          }}
+        <NavUserBtn 
+          style={{width: "100px", borderRadius: "20px"}}
           onClick={() => handleModal("Log In")}
-        >
-          Login
-        </Button>
+        > 
+          Login 
+        </NavUserBtn>
       </>
     );
   };
