@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBell } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import BaseModal from "../../components/reusable/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
@@ -26,6 +26,9 @@ const NavBar = () => {
         <>
           <NavUserBtn>
             <FontAwesomeIcon icon={faUser} />
+          </NavUserBtn>
+          <NavUserBtn>
+            <FontAwesomeIcon icon={faBell} />
           </NavUserBtn>
         </>
       );
