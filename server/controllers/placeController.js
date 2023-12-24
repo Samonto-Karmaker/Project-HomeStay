@@ -17,6 +17,32 @@ const pushDummyPlaces = async () => {
     }
 };
 
+// Get all the place
+const getAllPlaces = async (req, res, next) => {
+    try {
+        const allPlaces = await Places.find({});
+        if(allPlaces) {
+            res.status(200).json({
+                success: true,
+                message: "All places are fetched successfully",
+                places: allPlaces,
+            });
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                message: "No places found",
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
+    getAllPlaces,
 };
