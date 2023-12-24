@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 //Internal Imports
 const authRouter = require('./routes/authRouter');
 const {pushDummyPlaces} = require('./controllers/placeController');
+const placeRouter = require('./routes/placeRouter');
 
 //Initialization
 const app = express();
@@ -34,6 +35,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //Routing
 app.use("/api", authRouter)
+app.use("/api/places", placeRouter)
 
 //Error Handler
 //Default Error Handler
