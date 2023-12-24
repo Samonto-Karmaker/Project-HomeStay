@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 
 //Internal Imports
 const authRouter = require('./routes/authRouter');
+const {pushDummyPlaces} = require('./controllers/placeController');
 
 //Initialization
 const app = express();
@@ -18,6 +19,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_URL, {
     useUnifiedTopology: true
 })
 .then(() => console.log('Connected to MongoDB successfully...'))
+.then(() => pushDummyPlaces())
 .catch((err) => console.log(`Error: ${err}`));
 
 //Request Parser
