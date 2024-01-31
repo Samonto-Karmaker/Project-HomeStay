@@ -24,7 +24,6 @@ const MainComponent = () => {
       }
       else{
         setUser(null);
-        window.alert(result.message);
       }
     }
     catch(err){

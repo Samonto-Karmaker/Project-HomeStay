@@ -11,11 +11,17 @@ const checkAuth = (req, res, next) => {
             next();
         }
         catch(err){
-            res.status(401).json({
+            res.status(500).json({
                 success: false,
-                message: 'Unauthorized access',
+                message: 'Internal server error',
             });
         }
+    }
+    else{
+        res.status(401).json({
+            success: false,
+            message: 'Unauthorized access',
+        });
     }
 }
 
