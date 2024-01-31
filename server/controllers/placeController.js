@@ -20,8 +20,12 @@ const pushDummyPlaces = async () => {
 // Get all the place
 const getAllPlaces = async (req, res, next) => {
     try {
-        const allPlaces = await Places.find({});
+        let allPlaces = await Places.find({});
         if(allPlaces) {
+            allPlaces = allPlaces.map(place => ({
+                ...place._doc,
+                images: place.images.map(img => `${process.env.APP_URL}/images/places/${img}`)
+            }))
             res.status(200).json({
                 success: true,
                 message: "All places are fetched successfully",

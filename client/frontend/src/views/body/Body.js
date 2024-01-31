@@ -1,9 +1,10 @@
 import React from "react";
+import Places from "./home page/Places";
 
 const Body = () => {
   return (
     <div className="body">
-      <h1>Body</h1>
+      <Places />
     </div>
   );
 };
