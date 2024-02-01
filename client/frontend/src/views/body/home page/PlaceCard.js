@@ -4,11 +4,9 @@ import StarRating from 'react-star-ratings';
 
 const PlaceCard = ({ place }) => {
   return (
-    <div key={place._id}>
+    <>
       <Card className="placeCard" 
-        style={{ 
-          width: '20rem', 
-          margin: '15px', 
+        style={{
           textAlign: "left", 
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" 
         }}
@@ -35,7 +33,7 @@ const PlaceCard = ({ place }) => {
         </Card.Text>
       </Card.Body>
     </Card>
-    </div>
+    </>
   );
 };
 
