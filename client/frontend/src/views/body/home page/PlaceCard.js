@@ -1,10 +1,16 @@
 import React from "react";
 import Card from 'react-bootstrap/Card';
 import StarRating from 'react-star-ratings';
+import { Link } from "react-router-dom";
 
 const PlaceCard = ({ place }) => {
   return (
-    <>
+    <Link to ={{
+      pathname: `/place/${place._id}`,
+      state: { place: place }
+    }}
+    style = {{textDecoration: "none"}}
+    >
       <Card className="placeCard" 
         style={{
           textAlign: "left", 
@@ -33,7 +39,7 @@ const PlaceCard = ({ place }) => {
         </Card.Text>
       </Card.Body>
     </Card>
-    </>
+    </Link>
   );
 };
 
