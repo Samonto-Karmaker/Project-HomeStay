@@ -9,6 +9,7 @@ import { Row, Col } from "react-bootstrap";
 import BaseModal from "../../components/reusable/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
 import NavUserBtn from "../../components/reusable/NavUserBtn";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const { User } = useContext(UserContext);
@@ -48,7 +49,7 @@ const NavBar = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container style={{ padding: "10px" }}>
-        <Navbar.Brand href="#home" style={{ color: "red", fontSize: "20px" }}>
+        <Navbar.Brand as={Link} to="/" style={{ color: "red", fontSize: "20px" }}>
           <FontAwesomeIcon
             icon={faAirbnb}
             size="lg"
@@ -73,7 +74,7 @@ const NavBar = () => {
               style={{ padding: "5px", color: "grey" }}
             >
               <Col>
-                <Nav.Link className="NavBtn" href="#home">
+                <Nav.Link as={Link} to="/" className="NavBtn">
                   Home
                 </Nav.Link>
               </Col>
