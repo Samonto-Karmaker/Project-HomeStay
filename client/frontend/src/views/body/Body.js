@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import Places from "./home page/Places";
-import PlaceDetails from "./PlaceDetails";
+import PlaceDetails from "./place details/PlaceDetails";
 
 const Body = () => {
   return (
