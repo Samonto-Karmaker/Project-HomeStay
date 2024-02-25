@@ -7,7 +7,6 @@ const PlaceCard = ({ place }) => {
   return (
     <Link to ={{
       pathname: `/place/${place._id}`,
-      state: { place: place }
     }}
     style = {{textDecoration: "none"}}
     >

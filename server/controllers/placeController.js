@@ -46,7 +46,36 @@ const getAllPlaces = async (req, res, next) => {
     }
 }
 
+const getPlaceByID = async (req, res, next) => {
+    try {
+        const placeId = req.params.placeId;
+        const place = await Places.findById(placeId);
+        if(place) {
+            res.status(200).json({
+                success: true,
+                message: "Place is fetched successfully",
+                place: {
+                    ...place._doc,
+                    images: place.images.map(img => `${process.env.APP_URL}/images/places/${img}`)
+                }
+            });
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                message: "Place not found",
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
+    getPlaceByID,
 };
