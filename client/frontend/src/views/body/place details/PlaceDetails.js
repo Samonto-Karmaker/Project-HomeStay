@@ -44,7 +44,7 @@ const PlaceDetails = () => {
         <Container>
             <Row>
                 <Col>
-                    <ImgSwiper />
+                    <ImgSwiper images = {place.images}/>
                 </Col>
             </Row>
             <Row>
