@@ -49,7 +49,7 @@ const PlaceDetails = () => {
             </Row>
             <Row>
                 <Col md={8}>
-                    <PlaceInfo />
+                    <PlaceInfo place = {place}/>
                 </Col>
                 <Col md={4}>
                     <PlaceReserve />
