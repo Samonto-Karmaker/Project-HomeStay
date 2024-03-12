@@ -1,5 +1,6 @@
 //Internal Imports
 const Places = require('../models/Places');
+const Actors = require('../models/Actors');
 const dummyPlaces = require('../data/place_data');
 
 // Push Dummy data if necessary
@@ -46,6 +47,7 @@ const getAllPlaces = async (req, res, next) => {
     }
 }
 
+// Get place by ID
 const getPlaceByID = async (req, res, next) => {
     try {
         const placeId = req.params.placeId;
@@ -74,8 +76,44 @@ const getPlaceByID = async (req, res, next) => {
     }
 }
 
+//Get owner of the place
+const getOwnerByID = async (res, req, next) => {
+    try{
+        const ownerId = req.params.ownerId;
+        const owner = await Actors.findById(ownerId);
+        if(owner) {
+            if(owner.isOwner) {
+                res.status(200).json({
+                    success: true,
+                    message: "Owner is fetched successfully",
+                    owner: owner,
+                });
+            }
+            else {
+                res.status(400).json({
+                    success: false,
+                    message: "This user is not an owner",
+                });
+            }
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                message: "Owner not found",
+            });
+        }
+    }
+    catch(error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
     getPlaceByID,
+    getOwnerByID,
 };
