@@ -2,7 +2,7 @@
 const express = require('express');
 
 //Internal imports
-const { getAllPlaces, getPlaceByID } = require('../controllers/placeController');
+const { getAllPlaces, getPlaceByID, getOwnerByID } = require('../controllers/placeController');
 
 //Initializing Router
 const router = express.Router();
@@ -12,5 +12,8 @@ router.get('/', getAllPlaces);
 
 //Get a single place by ID
 router.get('/:placeId', getPlaceByID);
+
+//Get the owner of a place
+router.get('/:ownerId', getOwnerByID);
 
 module.exports = router;
