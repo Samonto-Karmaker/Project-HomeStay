@@ -10,6 +10,13 @@ const pushDummyPlaces = async () => {
         if (placesCount === 0) {
             await Places.insertMany(dummyPlaces);
             console.log('Dummy data pushed successfully!');
+            for(let i=0; i<dummyPlaces.length; i++) {
+                const owner = await Actors.findById(dummyPlaces[i].ownerId);
+                if(owner && !owner.isOwner) {
+                    owner.isOwner = true;
+                    await owner.save();
+                }
+            }
         } else {
             console.log('Places model is not empty. Skipping dummy data push.');
         }
