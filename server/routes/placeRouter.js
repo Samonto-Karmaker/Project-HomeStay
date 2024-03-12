@@ -14,6 +14,6 @@ router.get('/', getAllPlaces);
 router.get('/:placeId', getPlaceByID);
 
 //Get the owner of a place
-router.get('/:ownerId', getOwnerByID);
+router.get('/owner-info/:ownerId', getOwnerByID);
 
 module.exports = router;

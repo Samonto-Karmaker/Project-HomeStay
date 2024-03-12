@@ -1,7 +1,45 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import StarRatings from 'react-star-ratings';
 
 const PlaceInfo = ({place}) => {
+
+  const [owner, setOwner] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchOwnerByID = async ownerId => {
+    try {
+      const response = await fetch(`/api/places/owner-info/${ownerId}`,{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      if(result.success) {
+        console.log(result.owner);
+        setOwner(result.owner);
+      } else {
+        window.alert(result.message);
+      }
+    }
+    catch(err) {
+      console.log(err);
+      window.alert('Something went wrong');
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if(place.ownerId) {
+      fetchOwnerByID(place.ownerId);
+    }
+  }, [place.ownerId]);
+
+  if(isLoading) return <h1>Loading...</h1>;
+
   return (
     <section style={{textAlign: "left", margin: "25px"}}>
       <h1 style={{fontFamily: "fantasy"}}>{place.name}</h1>
@@ -17,7 +55,7 @@ const PlaceInfo = ({place}) => {
         starSpacing="2px"
       />
       <hr />
-      <strong>Hosted by: </strong>
+      <strong>Hosted by: {owner.name ? owner.name : "Unknown"} </strong>
       <hr />
       <br />
       <h3 style={{fontFamily: "fantasy"}}>About This Place</h3>

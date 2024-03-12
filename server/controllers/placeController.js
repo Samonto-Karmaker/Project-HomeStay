@@ -84,7 +84,7 @@ const getPlaceByID = async (req, res, next) => {
 }
 
 //Get owner of the place
-const getOwnerByID = async (res, req, next) => {
+const getOwnerByID = async (req, res, next) => {
     try{
         const ownerId = req.params.ownerId;
         const owner = await Actors.findById(ownerId);
