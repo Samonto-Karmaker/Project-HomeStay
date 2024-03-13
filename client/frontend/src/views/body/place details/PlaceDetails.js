@@ -52,7 +52,10 @@ const PlaceDetails = () => {
                     <PlaceInfo place = {place}/>
                 </Col>
                 <Col md={4}>
-                    <PlaceReserve />
+                    <PlaceReserve 
+                        price = {place.price}
+                        isAvailable = {place.isAvailable}
+                    />
                 </Col>
             </Row>
         </Container>
