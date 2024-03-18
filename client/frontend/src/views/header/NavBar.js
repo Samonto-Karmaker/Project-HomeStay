@@ -25,9 +25,11 @@ const NavBar = () => {
     if (User) {
       return (
         <>
-          <NavUserBtn>
-            <FontAwesomeIcon icon={faUser} />
-          </NavUserBtn>
+          <Link to={`/user/${User.userId}`} style={{ textDecoration: "none" }}>
+            <NavUserBtn>
+              <FontAwesomeIcon icon={faUser} />
+            </NavUserBtn>
+          </Link>
           <NavUserBtn>
             <FontAwesomeIcon icon={faBell} />
           </NavUserBtn>
