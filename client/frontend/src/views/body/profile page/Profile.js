@@ -7,7 +7,7 @@ import { UserContext } from "../../../components/context/UserContext";
 
 const Profile = () => {
 
-    const { User } = useContext(UserContext);
+    const { User, setUser } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const Profile = () => {
 
     return (
         <div>
-            <UserInfo user = {User}/>
+            <UserInfo user = {User} setUser = {setUser} />
             <OwnerDashBoard />
             <UserDashBoard />
         </div>

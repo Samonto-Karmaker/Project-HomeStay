@@ -1,7 +1,33 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import RegularBtn from "../../../components/reusable/RegularBtn";
 
-const UserInfo = ({user}) => {
+const UserInfo = ({user, setUser}) => {
+
+    const navigate = useNavigate();
+
+    const handleLogOut = async () => {
+        if(window.confirm("Are you sure you want to log out?")) {
+            try {
+                const response = await fetch("/api/logout", {
+                    method: "DELETE",
+                    credentials: "include",
+                });
+                const result = await response.json();
+                if(result.success) {
+                    setUser(null);
+                    navigate("/");
+                }
+                window.alert(result.message);
+            }
+            catch(err) {
+                console.log(err);
+                window.alert("Something went wrong");
+            }
+        }
+    }
+
     return (
         <Card
             bg="light"
@@ -47,6 +73,19 @@ const UserInfo = ({user}) => {
                     Is Owner: {user.isOwner ? "Yes" : "No"}
                 </Card.Text>
             </Card.Body>
+            <Card.Footer
+                style = {{
+                    borderBottomLeftRadius: "20px",
+                    borderBottomRightRadius: "20px",
+                    borderTop: "2px solid #f8f9fa",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <RegularBtn onClick={handleLogOut} >
+                    Log Out
+                </RegularBtn>
+            </Card.Footer>
         </Card>
     );
 }
