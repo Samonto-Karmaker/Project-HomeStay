@@ -45,6 +45,14 @@ const placeSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        isNotAvailableFrom: {
+            type: Date,
+            required: () => !this.isAvailable,
+        },
+        isNotAvailableTo: {
+            type: Date,
+            required: () => !this.isAvailable,
+        },
         capacity: {
             type: Number,
             required: true,
