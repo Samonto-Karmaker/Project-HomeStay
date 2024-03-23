@@ -118,9 +118,66 @@ const getOwnerByID = async (req, res, next) => {
     }
 }
 
+// Update isAvailable field of a place
+const updatePlaceAvailability = async (req, res, next) => {
+    try {
+        const placeId = req.params.placeId;
+        const isAvailable = req.body.isAvailable;
+        const place = await Places.findById(placeId);
+
+        if(place && req.user._id.toString() === place.ownerId.toString()){
+            place.isAvailable = isAvailable;
+
+            if(!isAvailable) {
+                const isNotAvailableFrom = req.body.isNotAvailableFrom;
+                const isNotAvailableTo = req.body.isNotAvailableTo;
+
+                if(isNotAvailableFrom && isNotAvailableTo) {
+                    place.isNotAvailableFrom = isNotAvailableFrom;
+                    place.isNotAvailableTo = isNotAvailableTo;
+                }
+                else {
+                    res.status(400).json({
+                        success: false,
+                        message: "Please provide isNotAvailableFrom and isNotAvailableTo fields",
+                    });
+                    return;
+                }
+            }
+
+            await place.save();
+            res.status(200).json({
+                success: true,
+                message: "Place availability updated successfully",
+            });
+        }
+        else {
+            if(!place) {
+                res.status(404).json({
+                    success: false,
+                    message: "Place not found",
+                });
+            }
+            else {
+                res.status(401).json({
+                    success: false,
+                    message: "Unauthorized access",
+                });
+            }
+        }
+    }
+    catch(error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
     getPlaceByID,
     getOwnerByID,
+    updatePlaceAvailability,
 };
