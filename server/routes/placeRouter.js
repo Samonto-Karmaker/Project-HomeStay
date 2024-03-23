@@ -2,7 +2,13 @@
 const express = require('express');
 
 //Internal imports
-const { getAllPlaces, getPlaceByID, getOwnerByID } = require('../controllers/placeController');
+const { 
+    getAllPlaces, 
+    getPlaceByID, 
+    getOwnerByID, 
+    updatePlaceAvailability 
+} = require('../controllers/placeController');
+const { checkAuth } = require('../middlewares/common/protectPages');
 
 //Initializing Router
 const router = express.Router();
@@ -15,5 +21,8 @@ router.get('/:placeId', getPlaceByID);
 
 //Get the owner of a place
 router.get('/owner-info/:ownerId', getOwnerByID);
+
+//Update isAvailable field of a place
+router.put('/update-availability/:placeId', checkAuth, updatePlaceAvailability);
 
 module.exports = router;
