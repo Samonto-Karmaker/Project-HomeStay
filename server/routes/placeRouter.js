@@ -25,4 +25,7 @@ router.get('/owner-info/:ownerId', getOwnerByID);
 //Update isAvailable field of a place
 router.put('/update-availability/:placeId', checkAuth, updatePlaceAvailability);
 
+//Get places by owner ID
+router.get('/owner-places/:ownerId', getAllPlaces);
+
 module.exports = router;
