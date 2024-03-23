@@ -174,10 +174,37 @@ const updatePlaceAvailability = async (req, res, next) => {
     }
 }
 
+// Get places by owner ID
+const getPlacesByOwnerID = async (req, res, next) => {
+    try {
+        const ownerId = req.params.ownerId;
+        const places = await Places.find({ownerId: ownerId});
+        if(places) {
+            res.status(200).json({
+                success: true,
+                message: "Places are fetched successfully",
+                places: places,
+            });
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                message: "No places found",
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
     getPlaceByID,
     getOwnerByID,
     updatePlaceAvailability,
+    getPlacesByOwnerID,
 };
