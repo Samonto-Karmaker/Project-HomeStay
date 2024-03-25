@@ -6,7 +6,8 @@ const {
     getAllPlaces, 
     getPlaceByID, 
     getOwnerByID, 
-    updatePlaceAvailability 
+    updatePlaceAvailability,
+    getPlacesByOwnerID, 
 } = require('../controllers/placeController');
 const { checkAuth } = require('../middlewares/common/protectPages');
 
@@ -26,6 +27,6 @@ router.get('/owner-info/:ownerId', getOwnerByID);
 router.put('/update-availability/:placeId', checkAuth, updatePlaceAvailability);
 
 //Get places by owner ID
-router.get('/owner-places/:ownerId', getAllPlaces);
+router.get('/owner-places/:ownerId', getPlacesByOwnerID);
 
 module.exports = router;

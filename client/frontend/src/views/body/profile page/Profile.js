@@ -19,8 +19,11 @@ const Profile = () => {
     return (
         <div>
             <UserInfo user = {User} setUser = {setUser} />
-            <OwnerDashBoard />
+            <br />
+            <OwnerDashBoard user = {User} />
+            <br />
             <UserDashBoard />
+            <br />
         </div>
     );
 }
