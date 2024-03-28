@@ -7,6 +7,7 @@ const OwnerDashBoard = ({ user }) => {
   const [places, setPlaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   const fetchOwnerPlaces = async () => {
     try {
@@ -62,19 +63,32 @@ const OwnerDashBoard = ({ user }) => {
               </td>
               <td>${place.price}</td>
               <td>
-                <RegularBtn onClick={() => setShowModal(true)}>
+                <RegularBtn
+                  onClick={() => {
+                    setSelectedPlace(place);
+                    setShowModal(true);
+                  }}
+                >
                   {place.isAvailable ? "Available" : "Not Available"}
                 </RegularBtn>
               </td>
               <td>
                 <RegularBtn>view</RegularBtn>
               </td>
-              <AvailabilityDateChange
-                showModal={showModal}
-                onHide={() => setShowModal(false)}
-                placeId={place._id}
-                currentAvailability={place.isAvailable}
-              />
+              {selectedPlace && selectedPlace._id === place._id && (
+                <AvailabilityDateChange
+                  showModal={showModal}
+                  onHide={() => {
+                    setShowModal(false);
+                    setSelectedPlace(null);
+                  }}
+                  placeId={selectedPlace._id}
+                  currentAvailability={selectedPlace.isAvailable}
+                  isNotAvailableFrom={selectedPlace.isNotAvailableFrom}
+                  isNotAvailableTo={selectedPlace.isNotAvailableTo}
+                  fetchOwnerPlaces={fetchOwnerPlaces}
+                />
+              )}
             </tr>
           ))}
         </tbody>

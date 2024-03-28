@@ -125,7 +125,7 @@ const updatePlaceAvailability = async (req, res, next) => {
         const isAvailable = req.body.isAvailable;
         const place = await Places.findById(placeId);
 
-        if(place && req.user._id.toString() === place.ownerId.toString()){
+        if(place && req.user.userId.toString() === place.ownerId.toString()){
             place.isAvailable = isAvailable;
 
             if(!isAvailable) {
@@ -167,6 +167,7 @@ const updatePlaceAvailability = async (req, res, next) => {
         }
     }
     catch(error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: "Internal server error",
