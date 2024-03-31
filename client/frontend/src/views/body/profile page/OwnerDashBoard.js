@@ -49,8 +49,11 @@ const OwnerDashBoard = ({ user }) => {
           <tr>
             <th>Name</th>
             <th>Location</th>
+            <th>Rating</th>
             <th>Price Per Night</th>
             <th>Availability</th>
+            <th>Not Available From</th>
+            <th>Not Available To</th>
             <th>Reservation History</th>
           </tr>
         </thead>
@@ -61,6 +64,7 @@ const OwnerDashBoard = ({ user }) => {
               <td>
                 {place.city}, {place.country}
               </td>
+              <td>{place.rating}</td>
               <td>${place.price}</td>
               <td>
                 <RegularBtn
@@ -71,6 +75,20 @@ const OwnerDashBoard = ({ user }) => {
                 >
                   {place.isAvailable ? "Available" : "Not Available"}
                 </RegularBtn>
+              </td>
+              <td>
+                {place.isNotAvailableFrom
+                  ? new Date(place.isNotAvailableFrom)
+                      .toLocaleDateString()
+                      .split("T")[0]
+                  : "N/A"}
+              </td>
+              <td>
+                {place.isNotAvailableTo
+                  ? new Date(place.isNotAvailableTo)
+                      .toLocaleDateString()
+                      .split("T")[0]
+                  : "N/A"}
               </td>
               <td>
                 <RegularBtn>view</RegularBtn>
