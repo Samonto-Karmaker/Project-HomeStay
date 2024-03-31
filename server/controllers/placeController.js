@@ -129,12 +129,20 @@ const updatePlaceAvailability = async (req, res, next) => {
             place.isAvailable = isAvailable;
 
             if(!isAvailable) {
-                const isNotAvailableFrom = req.body.isNotAvailableFrom;
-                const isNotAvailableTo = req.body.isNotAvailableTo;
+                const isNotAvailableFrom = new Date(req.body.isNotAvailableFrom);
+                const isNotAvailableTo = new Date(req.body.isNotAvailableTo);
+                const currentDate = new Date();
 
                 if(isNotAvailableFrom && isNotAvailableTo) {
                     place.isNotAvailableFrom = isNotAvailableFrom;
                     place.isNotAvailableTo = isNotAvailableTo;
+
+                    if(currentDate >= isNotAvailableFrom && currentDate <= isNotAvailableTo) {
+                        place.isAvailable = false;
+                    }
+                    else{
+                        place.isAvailable = true;
+                    }
                 }
                 else {
                     res.status(400).json({
@@ -143,6 +151,9 @@ const updatePlaceAvailability = async (req, res, next) => {
                     });
                     return;
                 }
+            }
+            else{
+                place.isAvailable = isAvailable;
             }
 
             await place.save();
