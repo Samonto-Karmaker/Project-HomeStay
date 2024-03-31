@@ -25,6 +25,29 @@ const pushDummyPlaces = async () => {
     }
 };
 
+// Check if the available status of all places is valid
+const isAvailabilityStatusValid = async () => {
+    try {
+        const places = await Places.find({});
+        const currentDate = new Date();
+        for(let i = 0; i < places.length; i++) {
+            const place = places[i];
+            if(place.isNotAvailableFrom && place.isNotAvailableTo) {
+                if(currentDate >= place.isNotAvailableFrom && currentDate <= place.isNotAvailableTo) {
+                    place.isAvailable = false;
+                }
+                else {
+                    place.isAvailable = true;
+                }
+                await place.save();
+            }
+        }
+        console.log('Availability status checked successfully!');
+    } catch (error) {
+        console.error('Error checking availability:', error);
+    }
+}
+
 // Get all the place
 const getAllPlaces = async (req, res, next) => {
     try {
@@ -219,4 +242,5 @@ module.exports = {
     getOwnerByID,
     updatePlaceAvailability,
     getPlacesByOwnerID,
+    isAvailabilityStatusValid,
 };

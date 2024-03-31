@@ -8,7 +8,7 @@ const cors = require('cors');
 
 //Internal Imports
 const authRouter = require('./routes/authRouter');
-const {pushDummyPlaces} = require('./controllers/placeController');
+const { pushDummyPlaces, isAvailabilityStatusValid } = require('./controllers/placeController');
 const placeRouter = require('./routes/placeRouter');
 
 //Initialization
@@ -21,7 +21,10 @@ mongoose.connect(process.env.MONGO_CONNECTION_URL, {
     useUnifiedTopology: true
 })
 .then(() => console.log('Connected to MongoDB successfully...'))
-.then(() => pushDummyPlaces())
+.then(() => {
+    pushDummyPlaces();
+    isAvailabilityStatusValid();
+})
 .catch((err) => console.log(`Error: ${err}`));
 
 //Request Parser
