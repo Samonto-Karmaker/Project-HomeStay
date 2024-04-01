@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 import AvailabilityDateChange from "./AvailabilityDateChange";
+import { Link } from "react-router-dom";
 
 const OwnerDashBoard = ({ user }) => {
   const [places, setPlaces] = useState([]);
@@ -60,7 +61,14 @@ const OwnerDashBoard = ({ user }) => {
         <tbody>
           {places.map((place) => (
             <tr key={place._id}>
-              <td>{place.name}</td>
+              <td>
+                <Link
+                  to={`/place/${place._id}`}
+                  style={{ textDecoration: "none", color: "red"}}
+                >
+                  {place.name}
+                </Link>
+              </td>
               <td>
                 {place.city}, {place.country}
               </td>
