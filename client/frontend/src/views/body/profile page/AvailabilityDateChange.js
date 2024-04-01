@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
+import isValidDateRange from "../../../utilities/isValidDateRange";
 
 const AvailabilityDateChange = ({
   showModal,
@@ -19,6 +20,8 @@ const AvailabilityDateChange = ({
     e.preventDefault();
 
     if (window.confirm("Are you sure you want to update availability?")) {
+      if(!isValidDateRange(startDate, endDate)) return;
+
       try {
         const response = await fetch(
           `/api/places/update-availability/${placeId}`,

@@ -1,33 +1,15 @@
 import React, { useState } from "react";
 import { Row, Col, Form, Card } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
+import isValidDateRange from "../../../utilities/isValidDateRange";
 
 const PlaceReserve = ({ price, isAvailable }) => {
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
 
-  const isValidDateRange = () => {
-    const today = new Date().setHours(0, 0, 0, 0);
-
-    if (!checkIn || !checkOut) return false;
-    if (checkIn < today) {
-      alert("Time Travel is not allowed!");
-      return false;
-    }
-
-    const diffTime = checkOut.getTime() - checkIn.getTime();
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-    if (diffDays < 1) {
-      alert("Check Out must be after Check In!");
-      return false;
-    }
-    return true;
-  };
-
   const calculateTotalPrice = () => {
     if (!checkIn || !checkOut) return price;
-    if (!isValidDateRange()) return price;
+    if (!isValidDateRange(checkIn, checkOut)) return price;
 
     const diffTime = checkOut.getTime() - checkIn.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
