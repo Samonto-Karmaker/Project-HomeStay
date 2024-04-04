@@ -4,7 +4,7 @@ import RegularBtn from "../../../components/reusable/RegularBtn";
 import AvailabilityDateChange from "./AvailabilityDateChange";
 import { Link } from "react-router-dom";
 
-const OwnerDashBoard = ({ user }) => {
+const OwnerDashBoard = ({ isUser, user }) => {
   const [places, setPlaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -12,7 +12,7 @@ const OwnerDashBoard = ({ user }) => {
 
   const fetchOwnerPlaces = async () => {
     try {
-      const response = await fetch(`/api/places/owner-places/${user.userId}`, {
+      const response = await fetch(`/api/places/owner-places/${isUser ? user.userId : user._id}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -52,10 +52,14 @@ const OwnerDashBoard = ({ user }) => {
             <th>Location</th>
             <th>Rating</th>
             <th>Price Per Night</th>
-            <th>Availability</th>
-            <th>Not Available From</th>
-            <th>Not Available To</th>
-            <th>Reservation History</th>
+            {isUser && (
+              <>
+                <th>Availability</th>
+                <th>Not Available From</th>
+                <th>Not Available To</th>
+                <th>Reservation History</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -64,7 +68,7 @@ const OwnerDashBoard = ({ user }) => {
               <td>
                 <Link
                   to={`/place/${place._id}`}
-                  style={{ textDecoration: "none", color: "red"}}
+                  style={{ textDecoration: "none", color: "red" }}
                 >
                   {place.name}
                 </Link>
@@ -74,46 +78,50 @@ const OwnerDashBoard = ({ user }) => {
               </td>
               <td>{place.rating}</td>
               <td>${place.price}</td>
-              <td>
-                <RegularBtn
-                  onClick={() => {
-                    setSelectedPlace(place);
-                    setShowModal(true);
-                  }}
-                >
-                  {place.isAvailable ? "Available" : "Not Available"}
-                </RegularBtn>
-              </td>
-              <td>
-                {place.isNotAvailableFrom
-                  ? new Date(place.isNotAvailableFrom)
-                      .toLocaleDateString()
-                      .split("T")[0]
-                  : "N/A"}
-              </td>
-              <td>
-                {place.isNotAvailableTo
-                  ? new Date(place.isNotAvailableTo)
-                      .toLocaleDateString()
-                      .split("T")[0]
-                  : "N/A"}
-              </td>
-              <td>
-                <RegularBtn>view</RegularBtn>
-              </td>
-              {selectedPlace && selectedPlace._id === place._id && (
-                <AvailabilityDateChange
-                  showModal={showModal}
-                  onHide={() => {
-                    setShowModal(false);
-                    setSelectedPlace(null);
-                  }}
-                  placeId={selectedPlace._id}
-                  currentAvailability={selectedPlace.isAvailable}
-                  isNotAvailableFrom={selectedPlace.isNotAvailableFrom}
-                  isNotAvailableTo={selectedPlace.isNotAvailableTo}
-                  fetchOwnerPlaces={fetchOwnerPlaces}
-                />
+              {isUser && (
+                <>
+                  <td>
+                    <RegularBtn
+                      onClick={() => {
+                        setSelectedPlace(place);
+                        setShowModal(true);
+                      }}
+                    >
+                      {place.isAvailable ? "Available" : "Not Available"}
+                    </RegularBtn>
+                  </td>
+                  <td>
+                    {place.isNotAvailableFrom
+                      ? new Date(place.isNotAvailableFrom)
+                          .toLocaleDateString()
+                          .split("T")[0]
+                      : "N/A"}
+                  </td>
+                  <td>
+                    {place.isNotAvailableTo
+                      ? new Date(place.isNotAvailableTo)
+                          .toLocaleDateString()
+                          .split("T")[0]
+                      : "N/A"}
+                  </td>
+                  <td>
+                    <RegularBtn>view</RegularBtn>
+                  </td>
+                  {selectedPlace && selectedPlace._id === place._id && (
+                    <AvailabilityDateChange
+                      showModal={showModal}
+                      onHide={() => {
+                        setShowModal(false);
+                        setSelectedPlace(null);
+                      }}
+                      placeId={selectedPlace._id}
+                      currentAvailability={selectedPlace.isAvailable}
+                      isNotAvailableFrom={selectedPlace.isNotAvailableFrom}
+                      isNotAvailableTo={selectedPlace.isNotAvailableTo}
+                      fetchOwnerPlaces={fetchOwnerPlaces}
+                    />
+                  )}
+                </>
               )}
             </tr>
           ))}
