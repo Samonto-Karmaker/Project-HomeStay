@@ -4,7 +4,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
-import { faUser, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faBell,
+  faHouse,
+  faMagnifyingGlass,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import BaseModal from "../../components/reusable/BaseModal";
 import { UserContext } from "../../components/context/UserContext";
@@ -16,33 +22,34 @@ const NavBar = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
 
-  const handleModal = type => {
+  const handleModal = (type) => {
     setModalType(type);
     setShowModal(true);
-  }
+  };
 
   const handleLogIn = () => {
     if (User) {
       return (
-        <>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Link to={`/user/${User.userId}`} style={{ textDecoration: "none" }}>
             <NavUserBtn>
               <FontAwesomeIcon icon={faUser} />
             </NavUserBtn>
           </Link>
+
           <NavUserBtn>
             <FontAwesomeIcon icon={faBell} />
           </NavUserBtn>
-        </>
+        </div>
       );
     }
     return (
       <>
-        <NavUserBtn 
-          style={{width: "100px", borderRadius: "20px"}}
+        <NavUserBtn
+          style={{ width: "100px", borderRadius: "20px" }}
           onClick={() => handleModal("Log In")}
-        > 
-          Login 
+        >
+          Login
         </NavUserBtn>
       </>
     );
@@ -51,7 +58,11 @@ const NavBar = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container style={{ padding: "10px" }}>
-        <Navbar.Brand as={Link} to="/" style={{ color: "red", fontSize: "20px" }}>
+        <Navbar.Brand
+          as={Link}
+          to="/"
+          style={{ color: "red", fontSize: "20px" }}
+        >
           <FontAwesomeIcon
             icon={faAirbnb}
             size="lg"
@@ -77,7 +88,8 @@ const NavBar = () => {
             >
               <Col>
                 <Nav.Link as={Link} to="/" className="NavBtn">
-                  Home
+                  <FontAwesomeIcon icon={faHouse} />
+                  <span style={{ padding: "10px" }}> Home </span>
                 </Nav.Link>
               </Col>
               <Col xs="auto">
@@ -85,7 +97,8 @@ const NavBar = () => {
               </Col>
               <Col>
                 <Nav.Link className="NavBtn" href="#booking">
-                  Book Place
+                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                  <span style={{ padding: "10px" }}> Search </span>
                 </Nav.Link>
               </Col>
               <Col xs="auto">
@@ -93,7 +106,8 @@ const NavBar = () => {
               </Col>
               <Col>
                 <Nav.Link className="NavBtn" href="#add-hideout">
-                  Add Place
+                  <FontAwesomeIcon icon={faPlus} />
+                  <span style={{ padding: "10px" }}> Add Place </span>
                 </Nav.Link>
               </Col>
             </Row>
@@ -101,8 +115,8 @@ const NavBar = () => {
           <Nav>
             {handleLogIn()}
             <BaseModal
-              modal = {modalType}
-              toggle = {() => handleModal("Register")}
+              modal={modalType}
+              toggle={() => handleModal("Register")}
               show={showModal}
               onHide={() => setShowModal(false)}
             />
