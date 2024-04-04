@@ -24,7 +24,7 @@ const Profile = () => {
     }
   }, [User, owner]);
 
-  if (isLoading) return <div>...Loading</div>;
+  if (isLoading) return <h1 style={{color: "red"}}> 401 : Please login to see this page! </h1>;
   if (!isUser && !owner) return <div>...Loading</div>;
 
   return (
