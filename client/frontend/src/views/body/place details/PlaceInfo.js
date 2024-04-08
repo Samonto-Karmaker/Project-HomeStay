@@ -17,7 +17,6 @@ const PlaceInfo = ({ place }) => {
       });
       const result = await response.json();
       if (result.success) {
-        console.log(result.owner);
         setOwner(result.owner);
       } else {
         window.alert(result.message);

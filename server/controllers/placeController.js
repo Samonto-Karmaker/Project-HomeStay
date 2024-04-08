@@ -110,7 +110,7 @@ const getPlaceByID = async (req, res, next) => {
 const getOwnerByID = async (req, res, next) => {
     try{
         const ownerId = req.params.ownerId;
-        const owner = await Actors.findById(ownerId);
+        const owner = await Actors.findById(ownerId).select('-password');
         if(owner) {
             if(owner.isOwner) {
                 res.status(200).json({

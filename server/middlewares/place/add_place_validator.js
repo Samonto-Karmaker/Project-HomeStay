@@ -9,7 +9,7 @@ const Actors = require("../../models/Actors");
 
 const addPlaceValidators = [
     check("name")
-        .length({ min: 1 })
+        .isLength({ min: 1 })
         .withMessage("NameError: Name is required")
         .matches(/^[a-zA-Z][a-zA-Z\s-_]+$/)
         .withMessage(
@@ -33,7 +33,7 @@ const addPlaceValidators = [
         .isArray({ min: 1 })
         .withMessage("ImagesError: At least one image is required"),
     check("city")
-        .length({ min: 1 })
+        .isLength({ min: 1 })
         .withMessage("CityError: City is required")
         .matches(/^[A-Z][a-zA-Z\s-]+$/)
         .withMessage(
@@ -41,7 +41,7 @@ const addPlaceValidators = [
         )
         .trim(),
     check("country")
-        .length({ min: 1 })
+        .isLength({ min: 1 })
         .withMessage("CountryError: Country is required")
         .matches(/^[A-Z][a-zA-Z\s-]+$/)
         .withMessage(
@@ -49,7 +49,7 @@ const addPlaceValidators = [
         )
         .trim(),
     check("description")
-        .length({ min: 1 })
+        .isLength({ min: 1 })
         .withMessage("DescriptionError: Description is required")
         .trim(),
     check("price")
@@ -81,11 +81,11 @@ const addPlaceValidationHandler = (req, res, next) => {
     const mappedErrors = errors.mapped();
 
     // If there is no error, then proceed to the next middleware
-    if (Object.keys(mappedErrors).length === 0) next(); 
+    if (Object.keys(mappedErrors).isLength === 0) next(); 
 
     // If there is an error, then delete the uploaded image and send the error message
     else {
-        if (req.files.length > 0) {
+        if (req.files.isLength > 0) {
             req.files.forEach(file => {
                 unlink(path.join(__dirname, `/../public/images/Places${file.fileName}`), err => {
                     if (err) {
