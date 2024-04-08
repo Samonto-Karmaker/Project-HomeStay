@@ -235,6 +235,40 @@ const getPlacesByOwnerID = async (req, res, next) => {
     }
 }
 
+// Add place
+const addPlace = async (req, res, next) => {
+    try {
+        let images = null;
+        if(req.files && req.files.length > 0) {
+            images = req.files.map(file => file.filename);
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: "Please upload at least one image",
+            });
+            return;
+        }
+        const newPlace = new Places({
+            ...req.body,
+            images: images,
+            ownerId: req.user.userId,
+        });
+        await newPlace.save();
+        res.status(201).json({
+            success: true,
+            message: "Place added successfully",
+            place: newPlace,
+        });
+    }
+    catch(error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
@@ -243,4 +277,5 @@ module.exports = {
     updatePlaceAvailability,
     getPlacesByOwnerID,
     isAvailabilityStatusValid,
+    addPlace,
 };
