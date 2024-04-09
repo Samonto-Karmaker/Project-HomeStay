@@ -105,7 +105,7 @@ const NavBar = () => {
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link className="NavBtn" href="#add-hideout">
+                <Nav.Link as={Link} to="/add-place" className="NavBtn" href="#add-hideout">
                   <FontAwesomeIcon icon={faPlus} />
                   <span style={{ padding: "10px" }}> Add Place </span>
                 </Nav.Link>
