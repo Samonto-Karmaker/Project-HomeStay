@@ -78,6 +78,7 @@ const AddPlaceForm = () => {
                     placeholder="Enter place name (Pro tip: Make it catchy)"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="city" style={{ marginTop: "20px" }}>
@@ -88,6 +89,7 @@ const AddPlaceForm = () => {
                     placeholder="Enter city e.g. Bali, Paris, New York etc."
                     value={formData.city}
                     onChange={handleChange}
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="country" style={{ marginTop: "20px" }}>
@@ -98,13 +100,14 @@ const AddPlaceForm = () => {
                     placeholder="Enter country e.g. Indonesia, France, USA etc."
                     value={formData.country}
                     onChange={handleChange}
+                    required
                 />
             </Form.Group>
             <Row style={{ marginTop: "20px" }}>
                 <Col>
                     <Form.Group controlId="price">
                         <Form.Label style={{ fontWeight: "bold" }}>
-                            Price
+                            Price Per Night (in $)
                         </Form.Label>
                         <Form.Control
                             name="price"
@@ -112,6 +115,7 @@ const AddPlaceForm = () => {
                             placeholder="Enter price per night"
                             value={formData.price}
                             onChange={handleChange}
+                            required
                         />
                     </Form.Group>
                 </Col>
@@ -123,9 +127,11 @@ const AddPlaceForm = () => {
                         <Form.Control
                             name="capacity"
                             type="number"
+                            min={1}
                             placeholder="Enter number of bedrooms"
                             value={formData.capacity}
                             onChange={handleChange}
+                            required
                         />
                     </Form.Group>
                 </Col>
@@ -145,6 +151,7 @@ const AddPlaceForm = () => {
                     placeholder="Write short description of your place"
                     value={formData.description}
                     onChange={handleChange}
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="amenities" style={{ marginTop: "20px" }}>
@@ -156,6 +163,7 @@ const AddPlaceForm = () => {
                     name="amenities"
                     options={amenitiesOptions}
                     onChange={handleAmenitiesChange}
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="images" style={{ marginTop: "20px" }}>
@@ -165,6 +173,7 @@ const AddPlaceForm = () => {
                     type="file"
                     multiple
                     onChange={handleImagesChange}
+                    required
                 />
             </Form.Group>
             {formData.images &&
