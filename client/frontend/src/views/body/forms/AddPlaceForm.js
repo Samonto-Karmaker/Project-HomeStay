@@ -41,8 +41,14 @@ const AddPlaceForm = () => {
             ...formData,
             images: [...formData.images, ...Array.from(event.target.files)],
         });
-        console.log(formData.images);
     };
+
+    const handleImageDelete = (index) => {
+        setFormData({
+            ...formData,
+            images: formData.images.filter((image, idx) => idx !== index),
+        });
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -177,16 +183,17 @@ const AddPlaceForm = () => {
                             }}
                         />
                         <RegularBtn
+                            onClick={() => handleImageDelete(index)}
                             style={{
                                 position: "absolute",
                                 top: 0,
                                 right: 0,
-                                backgroundColor: "red",
-                                color: "white",
                                 borderRadius: "50%",
                                 border: "none",
                                 cursor: "pointer",
-                                textAlign: "center",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
                         >
                             X
