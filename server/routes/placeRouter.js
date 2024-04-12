@@ -39,9 +39,9 @@ router.get("/owner-places/:ownerId", getPlacesByOwnerID);
 router.post(
     "/add",
     checkAuth,
+    placeImgUploader,
     addPlaceValidators,
     addPlaceValidationHandler,
-    placeImgUploader,
     addPlace
 );
 

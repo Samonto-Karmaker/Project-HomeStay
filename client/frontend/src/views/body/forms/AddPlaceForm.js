@@ -48,11 +48,55 @@ const AddPlaceForm = () => {
             ...formData,
             images: formData.images.filter((image, idx) => idx !== index),
         });
-    }
+    };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+
+        const formDataToSend = new FormData();
+        formDataToSend.append("name", formData.name);
+        formDataToSend.append("ownerId", User.userId);
+        formDataToSend.append("city", formData.city);
+        formDataToSend.append("country", formData.country);
+        formDataToSend.append("price", formData.price);
+        formDataToSend.append("capacity", formData.capacity);
+        formDataToSend.append("description", formData.description);
+
+        formData.amenities.forEach((amenity) => {
+            formDataToSend.append("amenities", amenity);
+        });
+        formData.images.forEach((image) => {
+            formDataToSend.append("images", image);
+        });
+
+        try {
+            const response = await fetch("/api/places/add", {
+                method: "POST",
+                credentials: "include",
+                body: formDataToSend,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                window.alert("Place added successfully!");
+                setFormData({
+                    name: "",
+                    city: "",
+                    country: "",
+                    price: "",
+                    capacity: "",
+                    description: "",
+                    amenities: [],
+                    images: [],
+                });
+            } else {
+                window.alert(result.message);
+            }
+        } catch (err) {
+            window.alert("Something went wrong");
+            console.log(err);
+        }
     };
 
     if (!User)
@@ -178,7 +222,13 @@ const AddPlaceForm = () => {
             </Form.Group>
             {formData.images &&
                 Array.from(formData.images).map((file, index) => (
-                    <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                    <div
+                        key={index}
+                        style={{
+                            position: "relative",
+                            display: "inline-block",
+                        }}
+                    >
                         <img
                             src={URL.createObjectURL(file)}
                             alt={`Preview ${index}`}

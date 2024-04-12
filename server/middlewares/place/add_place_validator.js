@@ -29,9 +29,6 @@ const addPlaceValidators = [
                 throw createError(err.message);
             }
         }),
-    check("images")
-        .isArray({ min: 1 })
-        .withMessage("ImagesError: At least one image is required"),
     check("city")
         .isLength({ min: 1 })
         .withMessage("CityError: City is required")
@@ -80,14 +77,17 @@ const addPlaceValidationHandler = (req, res, next) => {
     const errors = validationResult(req);
     const mappedErrors = errors.mapped();
 
+    console.log(mappedErrors);
+
     // If there is no error, then proceed to the next middleware
-    if (Object.keys(mappedErrors).isLength === 0) next(); 
+    if (Object.keys(mappedErrors).length === 0) next(); 
 
     // If there is an error, then delete the uploaded image and send the error message
     else {
-        if (req.files.isLength > 0) {
+        console.log(req.files);
+        if (req.files && req.files.length > 0) {
             req.files.forEach(file => {
-                unlink(path.join(__dirname, `/../public/images/Places${file.fileName}`), err => {
+                unlink(path.join(__dirname, `/public/images/Places/${file.filename}`), err => {
                     if (err) {
                         console.log(err);
                     }
@@ -95,7 +95,7 @@ const addPlaceValidationHandler = (req, res, next) => {
             });
         }
         res.status(500).json({
-            errors: mappedErrors,
+            errors: mappedErrors
         });
     }
 }

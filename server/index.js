@@ -28,8 +28,8 @@ mongoose.connect(process.env.MONGO_CONNECTION_URL, {
 .catch((err) => console.log(`Error: ${err}`));
 
 //Request Parser
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({limit: "10mb", extended: true}));
 
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

@@ -47,11 +47,9 @@ const placeSchema = new mongoose.Schema(
         },
         isNotAvailableFrom: {
             type: Date,
-            required: () => !this.isAvailable,
         },
         isNotAvailableTo: {
             type: Date,
-            required: () => !this.isAvailable,
         },
         capacity: {
             type: Number,
