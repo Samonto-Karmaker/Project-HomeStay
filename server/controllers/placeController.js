@@ -270,6 +270,44 @@ const addPlace = async (req, res, next) => {
     }
 }
 
+// Search places
+const searchPlaces = async (req, res, next) => {
+    const { city, country, minPrice, maxPrice, minCapacity, minRating, amenities } = req.query;
+    const query = {
+        ...(city && { city: { $regex: city, $options: 'i' } }),
+        ...(country && { country: { $regex: country, $options: 'i' } }),
+        ...(minPrice && {price: { $gte: Number(minPrice) }}),
+        ...(maxPrice && {price: { $lte: Number(maxPrice) }}),
+        ...(minCapacity && {capacity: { $gte: Number(minCapacity)}}),
+        ...(minRating && {rating: { $gte: Number(minRating) }}),
+        ...(amenities && {amenities: { $all: amenities.split(",") }}),
+    };
+
+    try {
+        const places = await Places.find(query);
+        if(places && places.length > 0) {
+            res.status(200).json({
+                success: true,
+                message: "PLaces are fetched successfully",
+                places: places,
+            })
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                message: "No place found",
+            })
+        }
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        })
+    }
+}
+
 module.exports = {
     pushDummyPlaces,
     getAllPlaces,
@@ -279,4 +317,5 @@ module.exports = {
     getPlacesByOwnerID,
     isAvailabilityStatusValid,
     addPlace,
+    searchPlaces,
 };
