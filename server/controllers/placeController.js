@@ -274,8 +274,8 @@ const addPlace = async (req, res, next) => {
 const searchPlaces = async (req, res, next) => {
     const { city, country, minPrice, maxPrice, minCapacity, minRating, amenities } = req.query;
     const query = {
-        ...(city && { city: { $regex: city, $options: 'i' } }),
-        ...(country && { country: { $regex: country, $options: 'i' } }),
+        ...(city && { city: { $regex: city.replace(/-/g, " "), $options: 'i' } }),
+        ...(country && { country: { $regex: country.replace(/-/g, " "), $options: 'i' } }),
         ...(minPrice && {price: { $gte: Number(minPrice) }}),
         ...(maxPrice && {price: { $lte: Number(maxPrice) }}),
         ...(minCapacity && {capacity: { $gte: Number(minCapacity)}}),
