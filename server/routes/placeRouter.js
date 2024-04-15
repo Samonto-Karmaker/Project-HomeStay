@@ -9,6 +9,7 @@ const {
     updatePlaceAvailability,
     getPlacesByOwnerID,
     addPlace,
+    searchPlaces,
 } = require("../controllers/placeController");
 const { checkAuth } = require("../middlewares/common/protectPages");
 const {
@@ -16,6 +17,10 @@ const {
     addPlaceValidationHandler,
 } = require("../middlewares/place/add_place_validator");
 const placeImgUploader = require("../middlewares/place/placeImgUploader");
+const {
+    searchPlaceValidator,
+    searchPlaceValidationHandler,
+} = require("../middlewares/place/search_place_validator");
 
 //Initializing Router
 const router = express.Router();
@@ -34,6 +39,14 @@ router.put("/update-availability/:placeId", checkAuth, updatePlaceAvailability);
 
 //Get places by owner ID
 router.get("/owner-places/:ownerId", getPlacesByOwnerID);
+
+//Search for places
+router.get(
+    "/search",
+    searchPlaceValidator,
+    searchPlaceValidationHandler,
+    searchPlaces
+);
 
 //Add a new place
 router.post(
