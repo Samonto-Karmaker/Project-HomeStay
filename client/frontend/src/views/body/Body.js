@@ -4,6 +4,7 @@ import Places from "./home page/Places";
 import PlaceDetails from "./place details/PlaceDetails";
 import Profile from "./profile page/Profile";
 import AddPlaceForm from "./forms/AddPlaceForm";
+import SearchPlaceForm from "./forms/SearchPlaceForm";
 
 const Body = () => {
   return (
@@ -13,6 +14,7 @@ const Body = () => {
         <Route exact path="/place/:id" element={<PlaceDetails />} />
         <Route exact path="/user/:id" element={<Profile />} />
         <Route exact path="/add-place" element={<AddPlaceForm />} />
+        <Route exact path="/search-place" element={<SearchPlaceForm />} />
       </Routes>
     </div>
   );

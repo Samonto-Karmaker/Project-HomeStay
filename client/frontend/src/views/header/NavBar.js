@@ -96,7 +96,7 @@ const NavBar = () => {
                 <span>|</span>
               </Col>
               <Col>
-                <Nav.Link className="NavBtn" href="#booking">
+                <Nav.Link as={Link} to="/search-place" className="NavBtn">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                   <span style={{ padding: "10px" }}> Search </span>
                 </Nav.Link>
