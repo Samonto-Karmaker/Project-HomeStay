@@ -62,7 +62,20 @@ const SearchPlaceForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(state);
+        
+        const changedFields = Object.keys(state).reduce((result, field) => {
+            if (field === "amenities" && state[field].length !== initialState[field].length) {
+                result[field] = state[field];
+            }
+            else if (state[field] !== initialState[field]) {
+                result[field] = state[field];
+            }
+            return result;
+        }, {})
+
+        const params = new URLSearchParams(changedFields).toString();
+        const url = `/api/places/search?${params}`;
+        console.log(url);
     }
 
     return (
