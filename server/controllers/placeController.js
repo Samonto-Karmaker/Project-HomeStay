@@ -254,6 +254,11 @@ const addPlace = async (req, res, next) => {
             images: images,
             ownerId: req.user.userId,
         });
+        const owner = await Actors.findById(req.user.userId);
+        if(owner && !owner.isOwner) {
+            owner.isOwner = true;
+            await owner.save();
+        }
         await newPlace.save();
         res.status(201).json({
             success: true,

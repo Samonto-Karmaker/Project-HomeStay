@@ -6,7 +6,7 @@ import commonAmenities from "../../../utilities/commonAmenities";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const AddPlaceForm = () => {
-    const { User } = useContext(UserContext);
+    const { User, setUser } = useContext(UserContext);
     const [formData, setFormData] = useState({
         name: "",
         city: "",
@@ -90,6 +90,12 @@ const AddPlaceForm = () => {
                     amenities: [],
                     images: [],
                 });
+                if(!User.isOwner) {
+                    setUser({
+                        ...User,
+                        isOwner: true
+                    });
+                }
             } else {
                 window.alert(result.message);
             }
