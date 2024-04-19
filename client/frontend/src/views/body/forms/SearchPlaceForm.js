@@ -6,6 +6,8 @@ import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const ACTIONS = {
     SET_VALUE: "set-value",
+    SET_AMENITIES: "set-amenities",
+    SET_NUMERIC: "set-numeric",
 };
 
 const initialState = {
@@ -22,6 +24,12 @@ const reducer = (state, action) => {
     switch (action.type) {
         case ACTIONS.SET_VALUE: {
             return { ...state, [action.field]: action.payload };
+        }
+        case ACTIONS.SET_AMENITIES: {
+            return { ...state, [action.field]: [...action.payload] };
+        }
+        case ACTIONS.SET_NUMERIC: {
+            return {...state, [action.field]: isNaN(action.payload) ? 0 : parseInt(action.payload)}
         }
         default:
             return state;
@@ -54,32 +62,53 @@ const SearchPlaceForm = () => {
 
     const handleSelectChange = (selectedOptions) => {
         dispatch({
-            type: ACTIONS.SET_VALUE,
+            type: ACTIONS.SET_AMENITIES,
             field: "amenities",
             payload: selectedOptions.map((option) => option.value),
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        const changedFields = Object.keys(state).reduce((result, field) => {
-            if (field === "amenities" && state[field].length !== initialState[field].length) {
-                result[field] = state[field];
-            }
-            else if (state[field] !== initialState[field]) {
-                result[field] = state[field];
-            }
-            return result;
-        }, {})
-
-        const params = new URLSearchParams(changedFields).toString();
-        const url = `/api/places/search?${params}`;
-        console.log(url);
+    const handleNumericInputChange = (e) => {
+        dispatch({
+            type: ACTIONS.SET_NUMERIC,
+            field: e.target.name,
+            payload: e.target.value
+        })
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        console.log(state);
+
+        try {
+            const response = await fetch("/api/places/search", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(state),
+            });
+            const result = await response.json();
+            console.log(result);
+            if (result.success) {
+                console.log(result.places);
+            } else {
+                console.log(result.message);
+                window.alert(result.message);
+            }
+        } catch (err) {
+            console.log(err);
+            window.alert("Something went wrong");
+        }
+    };
+
     return (
-        <Form style={{ textAlign: "left", padding: "25px" }} onSubmit={handleSubmit}>
+        <Form
+            style={{ textAlign: "left", padding: "25px" }}
+            onSubmit={handleSubmit}
+        >
             <Form.Group>
                 <Row style={{ marginTop: "20px" }}>
                     <Col>
@@ -108,6 +137,7 @@ const SearchPlaceForm = () => {
                                 name="city"
                                 value={city}
                                 onChange={handleInputChange}
+                                required
                             />
                         </Form.Group>
                     </Col>
@@ -125,7 +155,8 @@ const SearchPlaceForm = () => {
                                 name="minPrice"
                                 value={minPrice}
                                 min={0}
-                                onChange={handleInputChange}
+                                onChange={handleNumericInputChange}
+                                required
                             />
                         </Form.Group>
                     </Col>
@@ -139,7 +170,8 @@ const SearchPlaceForm = () => {
                                 name="maxPrice"
                                 value={maxPrice}
                                 min={0}
-                                onChange={handleInputChange}
+                                onChange={handleNumericInputChange}
+                                required
                             />
                         </Form.Group>
                     </Col>
@@ -157,7 +189,8 @@ const SearchPlaceForm = () => {
                                 name="minCapacity"
                                 value={minCapacity}
                                 min={0}
-                                onChange={handleInputChange}
+                                onChange={handleNumericInputChange}
+                                required
                             />
                         </Form.Group>
                     </Col>
@@ -172,7 +205,8 @@ const SearchPlaceForm = () => {
                                 value={minRating}
                                 min={0}
                                 max={5}
-                                onChange={handleInputChange}
+                                onChange={handleNumericInputChange}
+                                required
                             />
                         </Form.Group>
                     </Col>

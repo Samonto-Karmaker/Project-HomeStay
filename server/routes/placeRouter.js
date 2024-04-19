@@ -41,7 +41,7 @@ router.put("/update-availability/:placeId", checkAuth, updatePlaceAvailability);
 router.get("/owner-places/:ownerId", getPlacesByOwnerID);
 
 //Search for places
-router.get(
+router.post(
     "/search",
     searchPlaceValidator,
     searchPlaceValidationHandler,
