@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import commonAmenities from "../../../utilities/commonAmenities";
@@ -47,6 +48,7 @@ const SearchPlaceForm = () => {
         minRating,
         amenities,
     } = state;
+    const navigate = useNavigate();
 
     const amenitiesOptions = commonAmenities.map((amenity) => {
         return { value: amenity, label: amenity };
@@ -94,6 +96,7 @@ const SearchPlaceForm = () => {
             console.log(result);
             if (result.success) {
                 console.log(result.places);
+                navigate("/", { state: { searchedPlaces: result.places } });
             } else {
                 console.log(result.message);
                 window.alert(result.message);

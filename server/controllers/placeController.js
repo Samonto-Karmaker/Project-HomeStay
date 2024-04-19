@@ -291,8 +291,12 @@ const searchPlaces = async (req, res, next) => {
     };
 
     try {
-        const places = await Places.find(query);
+        let places = await Places.find(query);
         if(places && places.length > 0) {
+            places = places.map(place => ({
+                ...place._doc,
+                images: place.images.map(img => `${process.env.APP_URL}/images/places/${img}`)
+            }));
             res.status(200).json({
                 success: true,
                 message: "PLaces are fetched successfully",

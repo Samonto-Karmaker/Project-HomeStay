@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import PlaceCard from "./PlaceCard";
 
 const Places = () => {
   const [places, setPlaces] = useState([]);
+  const location = useLocation();
+  const searchedPlaces = location.state?.searchedPlaces;
 
   const fetchPlaces = async () => {
     try {
@@ -28,8 +31,12 @@ const Places = () => {
   };
 
   useEffect(() => {
-    fetchPlaces();
-  }, []);
+    if(searchedPlaces) {
+      setPlaces(searchedPlaces);
+    } else {
+      fetchPlaces();
+    }
+  }, [searchedPlaces]);
 
   return (
     <Container style={{marginBottom: "15px", marginTop: "15px"}}>
