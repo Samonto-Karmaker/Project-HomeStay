@@ -3,7 +3,6 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAirbnb } from "@fortawesome/free-brands-svg-icons";
 import {
   faUser,
   faBell,
@@ -61,15 +60,9 @@ const NavBar = () => {
         <Navbar.Brand
           as={Link}
           to="/"
-          style={{ color: "red", fontSize: "20px" }}
+          style={{ color: "red", fontSize: "20px", fontFamily: "fantasy", fontWeight: "bold"}}
         >
-          <FontAwesomeIcon
-            icon={faAirbnb}
-            size="lg"
-            color="red"
-            style={{ marginRight: "10px" }}
-          />
-          <b>AirBnB Clone</b>
+          <i>Project HomeStay</i>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav" style={{ padding: "10px" }}>
