@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import StarRatings from "react-star-ratings";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCity, faBed } from "@fortawesome/free-solid-svg-icons";
 
 const PlaceInfo = ({ place }) => {
   const [owner, setOwner] = useState({});
@@ -41,10 +43,12 @@ const PlaceInfo = ({ place }) => {
     <section style={{ textAlign: "left", margin: "25px" }}>
       <h1 style={{ fontFamily: "fantasy" }}>{place.name}</h1>
       <p>
-        {place.city}, {place.country}
+        <FontAwesomeIcon icon={faCity} color="red"/>
+        {" " + place.city}, {place.country}
       </p>
       <p>
-        {place.capacity} Bedrooms, ${place.price} Per Night
+        <FontAwesomeIcon icon={faBed} color="red"/>
+        {" " + place.capacity} Bedrooms, ${place.price} Per Night
       </p>
       <b>Rating: </b>
       <StarRatings
