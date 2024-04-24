@@ -20,7 +20,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
         return diffDays * price;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!User) {
             alert("Please login to reserve this place");
@@ -36,7 +36,31 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
             checkOut,
             guests,
         };
-        console.log(reservation);
+
+        try {
+            const response = await fetch("/api/bookings", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reservation),
+            })
+            const result = await response.json();
+            if (result.success) {
+                window.alert("Reservation successful");
+                setCheckIn(null);
+                setCheckOut(null);
+                setGuests(1);
+            } else {
+                window.alert(result.message);
+            }
+        }
+        catch (err) {
+            console.log(err);
+            alert("Something went wrong");
+        }
+        
     };
 
     return (
