@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row, Col, Form, Card } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 import isValidDateRange from "../../../utilities/isValidDateRange";
+import { UserContext } from "../../../components/context/UserContext";
 
 const PlaceReserve = ({ price, isAvailable }) => {
     const [checkIn, setCheckIn] = useState(null);
     const [checkOut, setCheckOut] = useState(null);
     const [guests, setGuests] = useState(1);
+
+    const { User } = useContext(UserContext);
 
     const calculateTotalPrice = () => {
         if (!checkIn || !checkOut) return price;
@@ -19,6 +22,10 @@ const PlaceReserve = ({ price, isAvailable }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!User) {
+            alert("Please login to reserve this place");
+            return;
+        }
         if (!checkIn || !checkOut) {
             alert("Please select check in and check out dates");
             return;
@@ -27,7 +34,7 @@ const PlaceReserve = ({ price, isAvailable }) => {
             checkIn,
             checkOut,
             guests,
-        }
+        };
         console.log(reservation);
     };
 
@@ -89,7 +96,7 @@ const PlaceReserve = ({ price, isAvailable }) => {
                             />
                         </Col>
                     </Form.Group>
-                    {isAvailable && (
+                    {isAvailable && User && (
                         <Form.Group as={Row}>
                             <Col sm={{ span: 10, offset: 2 }}>
                                 <RegularBtn type="submit">Reserve</RegularBtn>
