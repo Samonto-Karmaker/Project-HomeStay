@@ -4,7 +4,7 @@ import RegularBtn from "../../../components/reusable/RegularBtn";
 import isValidDateRange from "../../../utilities/isValidDateRange";
 import { UserContext } from "../../../components/context/UserContext";
 
-const PlaceReserve = ({ price, isAvailable }) => {
+const PlaceReserve = ({ placeId, price, isAvailable }) => {
     const [checkIn, setCheckIn] = useState(null);
     const [checkOut, setCheckOut] = useState(null);
     const [guests, setGuests] = useState(1);
@@ -31,6 +31,7 @@ const PlaceReserve = ({ price, isAvailable }) => {
             return;
         }
         const reservation = {
+            placeId,
             checkIn,
             checkOut,
             guests,
