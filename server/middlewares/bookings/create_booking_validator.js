@@ -20,7 +20,7 @@ const createBookingValidators = [
             }
         }),
     check("checkIn")
-        .isDate()
+        .isISO8601()
         .withMessage("CheckInError: Check in date is not valid")
         .custom((checkIn) => {
             if (checkIn < new Date()) {
@@ -31,7 +31,7 @@ const createBookingValidators = [
             return true;
         }),
     check("checkOut")
-        .isDate()
+        .isISO8601()
         .withMessage("CheckOutError: Check out date is not valid")
         .custom((checkOut, { req }) => {
             if (checkOut <= req.body.checkIn) {

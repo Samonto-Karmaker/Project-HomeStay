@@ -20,4 +20,4 @@ router.post(
     createBooking
 );
 
-exports.default = router;
+module.exports = router;

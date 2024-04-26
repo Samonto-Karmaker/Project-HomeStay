@@ -53,6 +53,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
                 setCheckOut(null);
                 setGuests(1);
             } else {
+                console.log(checkIn, checkOut, guests);
                 window.alert(result.message);
             }
         }
@@ -90,7 +91,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
                             <Form.Control
                                 type="date"
                                 onChange={(e) =>
-                                    setCheckIn(new Date(e.target.value))
+                                    setCheckIn(e.target.value)
                                 }
                             />
                         </Col>
@@ -103,7 +104,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
                             <Form.Control
                                 type="date"
                                 onChange={(e) =>
-                                    setCheckOut(new Date(e.target.value))
+                                    setCheckOut(e.target.value)
                                 }
                             />
                         </Col>
