@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Row, Col, Form, Card } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
-import isValidDateRange from "../../../utilities/isValidDateRange";
+import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 import { UserContext } from "../../../components/context/UserContext";
 
 const PlaceReserve = ({ placeId, price, isAvailable }) => {
@@ -10,15 +10,6 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
     const [guests, setGuests] = useState(1);
 
     const { User } = useContext(UserContext);
-
-    const calculateTotalPrice = () => {
-        if (!checkIn || !checkOut) return price;
-        if (!isValidDateRange(checkIn, checkOut)) return price;
-
-        const diffTime = checkOut.getTime() - checkIn.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays * price;
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -74,7 +65,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
         >
             <Card.Header>
                 <span style={{ fontWeight: "bold", fontSize: "30px" }}>
-                    ${calculateTotalPrice()}
+                    ${calculateTotalPrice(checkIn, checkOut, price, false)}
                 </span>
                 <span>/night</span>
             </Card.Header>

@@ -40,6 +40,7 @@ const getBookingsByUserId = async (req, res, next) => {
                 booking = booking.toObject();
                 booking.placeName = place.name;
                 booking.placeLocation = place.city + ", " + place.country;
+                booking.placePrice = place.price;
                 delete booking.placeId;
                 delete booking.userId;
                 return booking;

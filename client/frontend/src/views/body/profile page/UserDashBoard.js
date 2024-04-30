@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const UserDashBoard = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +62,14 @@ const UserDashBoard = () => {
                             <td>{bookings.placeName}</td>
                             <td>{bookings.placeLocation}</td>
                             <td>{bookings.rating}</td>
-                            <td>Dummy</td>
+                            <td>
+                                {calculateTotalPrice(
+                                    bookings.checkIn,
+                                    bookings.checkOut,
+                                    bookings.placePrice,
+                                    true
+                                )}
+                            </td>
                             <td>
                                 {
                                     new Date(bookings.checkIn)
