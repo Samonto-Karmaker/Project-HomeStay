@@ -16,7 +16,7 @@ const UserDashBoard = () => {
             });
             const result = await response.json();
             if (result.success) {
-                console.log(result.bookings);
+                setBookings(result.bookings);
             } else {
                 window.alert(result.message);
             }
@@ -55,6 +55,33 @@ const UserDashBoard = () => {
                         <th>Is Visited</th>
                     </tr>
                 </thead>
+                <tbody>
+                    {bookings.map((bookings) => (
+                        <tr key={bookings._id}>
+                            <td>{bookings.placeName}</td>
+                            <td>{bookings.placeLocation}</td>
+                            <td>{bookings.rating}</td>
+                            <td>Dummy</td>
+                            <td>
+                                {
+                                    new Date(bookings.checkIn)
+                                        .toLocaleDateString()
+                                        .split("T")[0]
+                                }
+                            </td>
+                            <td>
+                                {
+                                    new Date(bookings.checkOut)
+                                        .toLocaleDateString()
+                                        .split("T")[0]
+                                }
+                            </td>
+                            <td>{bookings.isConfirmed ? "True" : "False"}</td>
+                            <td>{bookings.isPaid ? "True" : "False"}</td>
+                            <td>{bookings.isVisited ? "True" : "False"}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </Table>
         </div>
     );
