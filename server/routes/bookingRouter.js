@@ -3,7 +3,11 @@ const express = require("express");
 
 // Internal imports
 const { checkAuth } = require("../middlewares/common/protectPages");
-const { createBooking, getBookingsByUserId } = require("../controllers/bookingController");
+const {
+    createBooking,
+    getBookingsByUserId,
+    updateRating,
+} = require("../controllers/bookingController");
 const {
     createBookingValidators,
     createBookingValidationResultHandler,
@@ -20,5 +24,6 @@ router.post(
     createBooking
 );
 router.get("/", checkAuth, getBookingsByUserId);
+router.put("/:bookingId/rating", checkAuth, updateRating);
 
 module.exports = router;
