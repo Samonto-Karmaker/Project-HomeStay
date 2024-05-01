@@ -87,6 +87,13 @@ const updateRating = async (req, res, next) => {
                 });
                 return;
             }
+            if (booking.rating > 0) {
+                res.status(400).json({
+                    success: false,
+                    message: "Rating already submitted",
+                });
+                return;
+            }
 
             booking.rating = rating;
             await booking.save();
