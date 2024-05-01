@@ -67,7 +67,65 @@ const getBookingsByUserId = async (req, res, next) => {
     }
 }
 
+// Update rating
+const updateRating = async (req, res, next) => {
+    try {
+        const bookingId = req.params.bookingId;
+        const rating = req.body.rating;
+        if(rating < 1 || rating > 5) {
+            res.status(400).json({
+                success: false,
+                message: "Rating must be between 1 and 5",
+            });
+            return;
+        }
+
+        const booking = await Bookings.findById(bookingId);
+        if(booking) {
+            booking.rating = rating;
+            await booking.save();
+
+            const place = await Places.findById(booking.placeId);
+            if(place) {
+                const bookingCount = await Bookings.countDocuments({ placeId: place._id });
+                if(bookingCount === 0) {
+                    res.status(404).json({
+                        success: false,
+                        message: "No bookings found for this place",
+                    });
+                    return;
+                }
+                else if(bookingCount === 1 && place.rating > 0) {
+                    place.rating = (place.rating + rating) / 2;
+                }
+                else {
+                    place.rating = (place.rating * (bookingCount - 1) + rating) / bookingCount;
+                }
+                await place.save();
+            }
+            else {
+                res.status(404).json({
+                    success: false,
+                    message: "Place not found",
+                });
+            }
+            res.status(200).json({
+                success: true,
+                message: "Booking rating updated",
+            });
+        }
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     createBooking,
     getBookingsByUserId,
+    updateRating,
 };
