@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Form } from "react-bootstrap";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const UserDashBoard = () => {
@@ -28,6 +28,13 @@ const UserDashBoard = () => {
             setIsLoading(false);
         }
     };
+
+    const handleRatingSubmit = async (e) => {
+        if (e.target.value === "0") return;
+        if (window.confirm("Are you sure you want to submit this rating?")) {
+            console.log(e.target.value);
+        }   
+    }
 
     useEffect(() => {
         fetchBookings();
@@ -61,7 +68,22 @@ const UserDashBoard = () => {
                         <tr key={bookings._id}>
                             <td>{bookings.placeName}</td>
                             <td>{bookings.placeLocation}</td>
-                            <td>{bookings.rating}</td>
+                            <td>
+                                {bookings.rating === 0 ? (
+                                    <Form.Select onChange={(e) => handleRatingSubmit(e)}>
+                                        <option value="0">
+                                            Please Rate Your Experience
+                                        </option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </Form.Select>
+                                ) : (
+                                    bookings.rating
+                                )}
+                            </td>
                             <td>
                                 {calculateTotalPrice(
                                     bookings.checkIn,
