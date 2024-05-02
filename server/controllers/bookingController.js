@@ -68,7 +68,7 @@ const getBookingsByUserId = async (req, res, next) => {
 const updateRating = async (req, res, next) => {
     try {
         const bookingId = req.params.bookingId;
-        const rating = req.body.rating;
+        const rating = Number(req.body.rating);
         if (rating < 1 || rating > 5) {
             res.status(400).json({
                 success: false,

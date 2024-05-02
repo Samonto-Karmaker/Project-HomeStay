@@ -6,11 +6,16 @@ import {
     faCircleCheck,
     faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import StarRatings from "react-star-ratings";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const UserDashBoard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [bookings, setBookings] = useState([]);
+    const [selectedBooking, setSelectedBooking] = useState({
+        bookingId: "",
+        rating: 0,
+    });
 
     const fetchBookings = async () => {
         try {
@@ -35,16 +40,44 @@ const UserDashBoard = () => {
         }
     };
 
-    const handleRatingSubmit = async (e) => {
-        if (e.target.value === "0") return;
-        if (window.confirm("Are you sure you want to submit this rating?")) {
-            console.log(e.target.value);
+    const handleRatingSubmit = async ({ bookingId, rating }) => {
+        if (rating === "0") return;
+        if (window.confirm(`Are you sure you want rate your experience to ${rating}?`)) {
+            try {
+                const response = await fetch(
+                    `/api/bookings/${bookingId}/rating`,
+                    {
+                        method: "PUT",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ rating }),
+                    }
+                );
+                const result = await response.json();
+                if (result.success) {
+                    fetchBookings();
+                    setSelectedBooking({ bookingId: "", rating: 0 });
+                } else {
+                    window.alert(result.message);
+                }
+            } catch (error) {
+                console.log(error);
+                window.alert("Something went wrong");
+            }
         }
     };
 
     useEffect(() => {
         fetchBookings();
     }, []);
+
+    useEffect(() => {
+        if (selectedBooking.bookingId && selectedBooking.rating !== 0) {
+            handleRatingSubmit(selectedBooking);
+        }
+    }, [selectedBooking]);
 
     if (isLoading) return <h1>Loading...</h1>;
 
@@ -87,10 +120,15 @@ const UserDashBoard = () => {
                             <td>
                                 {booking.rating === 0 ? (
                                     <Form.Select
-                                        onChange={(e) => handleRatingSubmit(e)}
+                                        onChange={(e) =>
+                                            setSelectedBooking({
+                                                bookingId: booking._id,
+                                                rating: e.target.value,
+                                            })
+                                        }
                                     >
                                         <option value="0">
-                                            Please Rate Your Experience
+                                            Rate Your Experience
                                         </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -99,7 +137,14 @@ const UserDashBoard = () => {
                                         <option value="5">5</option>
                                     </Form.Select>
                                 ) : (
-                                    booking.rating
+                                    <StarRatings
+                                        rating={booking.rating}
+                                        starRatedColor="red"
+                                        numberOfStars={5}
+                                        name="rating"
+                                        starDimension="20px"
+                                        starSpacing="2px"
+                                    />
                                 )}
                             </td>
                             <td>
