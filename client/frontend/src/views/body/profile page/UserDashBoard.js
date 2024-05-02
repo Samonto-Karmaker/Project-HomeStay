@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCircleCheck,
@@ -69,12 +70,22 @@ const UserDashBoard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bookings.map((bookings) => (
-                        <tr key={bookings._id}>
-                            <td>{bookings.placeName}</td>
-                            <td>{bookings.placeLocation}</td>
+                    {bookings.map((booking) => (
+                        <tr key={booking._id}>
                             <td>
-                                {bookings.rating === 0 ? (
+                                <Link
+                                    to={`/place/${booking.placeId}`}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "red",
+                                    }}
+                                >
+                                    {booking.placeName}
+                                </Link>
+                            </td>
+                            <td>{booking.placeLocation}</td>
+                            <td>
+                                {booking.rating === 0 ? (
                                     <Form.Select
                                         onChange={(e) => handleRatingSubmit(e)}
                                     >
@@ -88,33 +99,33 @@ const UserDashBoard = () => {
                                         <option value="5">5</option>
                                     </Form.Select>
                                 ) : (
-                                    bookings.rating
+                                    booking.rating
                                 )}
                             </td>
                             <td>
                                 {calculateTotalPrice(
-                                    bookings.checkIn,
-                                    bookings.checkOut,
-                                    bookings.placePrice,
+                                    booking.checkIn,
+                                    booking.checkOut,
+                                    booking.placePrice,
                                     true
                                 )}
                             </td>
                             <td>
                                 {
-                                    new Date(bookings.checkIn)
+                                    new Date(booking.checkIn)
                                         .toLocaleDateString()
                                         .split("T")[0]
                                 }
                             </td>
                             <td>
                                 {
-                                    new Date(bookings.checkOut)
+                                    new Date(booking.checkOut)
                                         .toLocaleDateString()
                                         .split("T")[0]
                                 }
                             </td>
                             <td>
-                                {bookings.isConfirmed ? (
+                                {booking.isConfirmed ? (
                                     <FontAwesomeIcon
                                         icon={faCircleCheck}
                                         style={{ color: "green" }}
@@ -129,7 +140,7 @@ const UserDashBoard = () => {
                                 )}
                             </td>
                             <td>
-                                {bookings.isPaid ? (
+                                {booking.isPaid ? (
                                     <FontAwesomeIcon
                                         icon={faCircleCheck}
                                         style={{ color: "green" }}
@@ -144,7 +155,7 @@ const UserDashBoard = () => {
                                 )}
                             </td>
                             <td>
-                                {bookings.isVisited ? (
+                                {booking.isVisited ? (
                                     <FontAwesomeIcon
                                         icon={faCircleCheck}
                                         style={{ color: "green" }}
