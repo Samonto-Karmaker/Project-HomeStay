@@ -143,6 +143,7 @@ const getBookingsByPlaceId = async (req, res, next) => {
     try {
         const placeId = req.params.placeId;
         const userId = req.user.userId;
+        const isOwner = req.user.isOwner;
         const place = await Places.findById(placeId);
 
         if (!place) {
@@ -152,7 +153,7 @@ const getBookingsByPlaceId = async (req, res, next) => {
             });
             return;
         }
-        if (place.ownerId.toString() !== userId) {
+        if (isOwner && place.ownerId.toString() !== userId) {
             res.status(403).json({
                 success: false,
                 message:
