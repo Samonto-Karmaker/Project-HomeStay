@@ -7,6 +7,7 @@ const {
     createBooking,
     getBookingsByUserId,
     updateRating,
+    getBookingsByPlaceId,
 } = require("../controllers/bookingController");
 const {
     createBookingValidators,
@@ -25,5 +26,6 @@ router.post(
 );
 router.get("/", checkAuth, getBookingsByUserId);
 router.put("/:bookingId/rating", checkAuth, updateRating);
+router.get("/:placeId", checkAuth, getBookingsByPlaceId);
 
 module.exports = router;
