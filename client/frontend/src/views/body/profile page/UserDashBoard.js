@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Table, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faCircleCheck,
+    faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const UserDashBoard = () => {
@@ -33,8 +38,8 @@ const UserDashBoard = () => {
         if (e.target.value === "0") return;
         if (window.confirm("Are you sure you want to submit this rating?")) {
             console.log(e.target.value);
-        }   
-    }
+        }
+    };
 
     useEffect(() => {
         fetchBookings();
@@ -58,9 +63,9 @@ const UserDashBoard = () => {
                         <th>Total Cost</th>
                         <th>Check In</th>
                         <th>Check Out</th>
-                        <th>Is Confirmed</th>
-                        <th>Is Paid</th>
-                        <th>Is Visited</th>
+                        <th>Confirmation Status</th>
+                        <th>Payment Status</th>
+                        <th>Visit Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +75,9 @@ const UserDashBoard = () => {
                             <td>{bookings.placeLocation}</td>
                             <td>
                                 {bookings.rating === 0 ? (
-                                    <Form.Select onChange={(e) => handleRatingSubmit(e)}>
+                                    <Form.Select
+                                        onChange={(e) => handleRatingSubmit(e)}
+                                    >
                                         <option value="0">
                                             Please Rate Your Experience
                                         </option>
@@ -106,9 +113,51 @@ const UserDashBoard = () => {
                                         .split("T")[0]
                                 }
                             </td>
-                            <td>{bookings.isConfirmed ? "True" : "False"}</td>
-                            <td>{bookings.isPaid ? "True" : "False"}</td>
-                            <td>{bookings.isVisited ? "True" : "False"}</td>
+                            <td>
+                                {bookings.isConfirmed ? (
+                                    <FontAwesomeIcon
+                                        icon={faCircleCheck}
+                                        style={{ color: "green" }}
+                                        aria-label="Confirmed"
+                                    />
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faCircleXmark}
+                                        style={{ color: "red" }}
+                                        aria-label="Not Confirmed"
+                                    />
+                                )}
+                            </td>
+                            <td>
+                                {bookings.isPaid ? (
+                                    <FontAwesomeIcon
+                                        icon={faCircleCheck}
+                                        style={{ color: "green" }}
+                                        aria-label="Paid"
+                                    />
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faCircleXmark}
+                                        style={{ color: "red" }}
+                                        aria-label="Not Paid"
+                                    />
+                                )}
+                            </td>
+                            <td>
+                                {bookings.isVisited ? (
+                                    <FontAwesomeIcon
+                                        icon={faCircleCheck}
+                                        style={{ color: "green" }}
+                                        aria-label="Visited"
+                                    />
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faCircleXmark}
+                                        style={{ color: "red" }}
+                                        aria-label="Not Visited"
+                                    />
+                                )}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
