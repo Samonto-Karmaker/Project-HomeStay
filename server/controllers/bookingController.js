@@ -138,8 +138,54 @@ const updateRating = async (req, res, next) => {
     }
 };
 
+// Get Bookings by place id
+const getBookingsByPlaceId = async (req, res, next) => {
+    try {
+        const placeId = req.params.placeId;
+        const userId = req.user.userId;
+        const place = await Places.findById(placeId);
+
+        if (!place) {
+            res.status(404).json({
+                success: false,
+                message: "Place not found",
+            });
+            return;
+        }
+        if (place.ownerId.toString() !== userId) {
+            res.status(403).json({
+                success: false,
+                message:
+                    "You are not authorized to get bookings for this place",
+            });
+            return;
+        }
+
+        const bookings = await Bookings.find({ placeId: placeId });
+        if (bookings && bookings.length > 0) {
+            res.status(200).json({
+                success: true,
+                message: "Bookings found",
+                bookings: bookings,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "No bookings found for this place",
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
 module.exports = {
     createBooking,
     getBookingsByUserId,
     updateRating,
+    getBookingsByPlaceId,
 };
