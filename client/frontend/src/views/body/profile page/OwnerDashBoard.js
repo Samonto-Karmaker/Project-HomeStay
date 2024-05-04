@@ -4,11 +4,17 @@ import RegularBtn from "../../../components/reusable/RegularBtn";
 import AvailabilityDateChange from "./AvailabilityDateChange";
 import StarRatings from "react-star-ratings";
 import { Link } from "react-router-dom";
+import ReservationHistory from "./ReservationHistory";
 
 const OwnerDashBoard = ({ isUser, user }) => {
     const [places, setPlaces] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [showModal, setShowModal] = useState(false);
+    const [
+        showAvailabilityDateChangeModal,
+        setShowAvailabilityDateChangeModal,
+    ] = useState(false);
+    const [showReservationHistoryModal, setShowReservationHistoryModal] =
+        useState(false);
     const [selectedPlace, setSelectedPlace] = useState(null);
 
     const fetchOwnerPlaces = async () => {
@@ -102,7 +108,9 @@ const OwnerDashBoard = ({ isUser, user }) => {
                                         <RegularBtn
                                             onClick={() => {
                                                 setSelectedPlace(place);
-                                                setShowModal(true);
+                                                setShowAvailabilityDateChangeModal(
+                                                    true
+                                                );
                                             }}
                                         >
                                             {place.isAvailable
@@ -125,31 +133,62 @@ const OwnerDashBoard = ({ isUser, user }) => {
                                             : "N/A"}
                                     </td>
                                     <td>
-                                        <RegularBtn>view</RegularBtn>
+                                        <RegularBtn
+                                            onClick={() => {
+                                                setSelectedPlace(place);
+                                                setShowReservationHistoryModal(
+                                                    true
+                                                );
+                                            }}
+                                        >
+                                            view
+                                        </RegularBtn>
                                     </td>
                                     {selectedPlace &&
                                         selectedPlace._id === place._id && (
-                                            <AvailabilityDateChange
-                                                showModal={showModal}
-                                                onHide={() => {
-                                                    setShowModal(false);
-                                                    setSelectedPlace(null);
-                                                }}
-                                                placeId={selectedPlace._id}
-                                                currentAvailability={
-                                                    selectedPlace.isAvailable
-                                                }
-                                                isNotAvailableFrom={
-                                                    selectedPlace.isNotAvailableFrom
-                                                }
-                                                isNotAvailableTo={
-                                                    selectedPlace.isNotAvailableTo
-                                                }
-                                                fetchOwnerPlaces={
-                                                    fetchOwnerPlaces
-                                                }
-                                            />
-                                        )}
+                                            <>
+                                                <AvailabilityDateChange
+                                                    showModal={
+                                                        showAvailabilityDateChangeModal
+                                                    }
+                                                    onHide={() => {
+                                                        setShowAvailabilityDateChangeModal(
+                                                            false
+                                                        );
+                                                        setSelectedPlace(null);
+                                                    }}
+                                                    placeId={selectedPlace._id}
+                                                    currentAvailability={
+                                                        selectedPlace.isAvailable
+                                                    }
+                                                    isNotAvailableFrom={
+                                                        selectedPlace.isNotAvailableFrom
+                                                    }
+                                                    isNotAvailableTo={
+                                                        selectedPlace.isNotAvailableTo
+                                                    }
+                                                    fetchOwnerPlaces={
+                                                        fetchOwnerPlaces
+                                                    }
+                                                />
+                                                <ReservationHistory
+                                                    showModal={
+                                                        showReservationHistoryModal
+                                                    }
+                                                    onHide={() => {
+                                                        setShowReservationHistoryModal(
+                                                            false
+                                                        );
+                                                        setSelectedPlace(null);
+                                                    }}
+                                                    placeId={selectedPlace._id}
+                                                    fetchOwnerPlaces={
+                                                        fetchOwnerPlaces
+                                                    }
+                                                />
+                                            </>
+                                        )
+                                    }
                                 </>
                             )}
                         </tr>
