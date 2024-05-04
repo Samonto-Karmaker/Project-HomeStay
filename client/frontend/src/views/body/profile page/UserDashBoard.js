@@ -148,7 +148,7 @@ const UserDashBoard = () => {
                                 )}
                             </td>
                             <td>
-                                {calculateTotalPrice(
+                                ${calculateTotalPrice(
                                     booking.checkIn,
                                     booking.checkOut,
                                     booking.placePrice,
