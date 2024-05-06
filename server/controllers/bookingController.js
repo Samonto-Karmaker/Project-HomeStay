@@ -51,8 +51,9 @@ const getBookingsByUserId = async (req, res, next) => {
             });
         } else {
             res.status(404).json({
-                success: false,
+                success: true,
                 message: "No bookings found",
+                bookings: [],
             });
         }
     } catch (error) {

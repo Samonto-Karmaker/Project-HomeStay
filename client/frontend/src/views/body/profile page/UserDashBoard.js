@@ -28,7 +28,11 @@ const UserDashBoard = () => {
             });
             const result = await response.json();
             if (result.success) {
-                setBookings(result.bookings);
+                if (result.bookings.length > 0) {
+                    setBookings(result.bookings);
+                } else {
+                    setBookings([]);
+                }
             } else {
                 window.alert(result.message);
             }
@@ -42,7 +46,11 @@ const UserDashBoard = () => {
 
     const handleRatingSubmit = async ({ bookingId, rating }) => {
         if (rating === "0") return;
-        if (window.confirm(`Are you sure you want rate your experience to ${rating}?`)) {
+        if (
+            window.confirm(
+                `Are you sure you want rate your experience to ${rating}?`
+            )
+        ) {
             try {
                 const response = await fetch(
                     `/api/bookings/${bookingId}/rating`,
@@ -80,6 +88,8 @@ const UserDashBoard = () => {
     }, [selectedBooking]);
 
     if (isLoading) return <h1>Loading...</h1>;
+
+    if (bookings.length === 0) return;
 
     return (
         <div>
@@ -148,7 +158,8 @@ const UserDashBoard = () => {
                                 )}
                             </td>
                             <td>
-                                ${calculateTotalPrice(
+                                $
+                                {calculateTotalPrice(
                                     booking.checkIn,
                                     booking.checkOut,
                                     booking.placePrice,
