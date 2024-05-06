@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Table } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faCircleCheck,
+    faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const ReservationHistory = ({ showModal, onHide, placeId }) => {
     const [reservations, setReservations] = useState([]);
@@ -58,6 +64,78 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                 <th>Visit Status</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {reservations.map((reservation) => (
+                                <tr key={reservation._id}>
+                                    <td>{reservation.guestName}</td>
+                                    <td>{reservation.guestEmail}</td>
+                                    <td>
+                                        {new Date(
+                                            reservation.checkIn
+                                        ).toDateString()}
+                                    </td>
+                                    <td>
+                                        {new Date(
+                                            reservation.checkOut
+                                        ).toDateString()}
+                                    </td>
+                                    <td>
+                                        $
+                                        {calculateTotalPrice(
+                                            reservation.checkIn,
+                                            reservation.checkOut,
+                                            reservation.price,
+                                            true
+                                        )}
+                                    </td>
+                                    <td>
+                                        {reservation.isConfirmed ? (
+                                            <FontAwesomeIcon
+                                                icon={faCircleCheck}
+                                                style={{ color: "green" }}
+                                                aria-label="Confirmed"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faCircleXmark}
+                                                style={{ color: "red" }}
+                                                aria-label="Not Confirmed"
+                                            />
+                                        )}
+                                    </td>
+                                    <td>
+                                        {reservation.isPaid ? (
+                                            <FontAwesomeIcon
+                                                icon={faCircleCheck}
+                                                style={{ color: "green" }}
+                                                aria-label="Paid"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faCircleXmark}
+                                                style={{ color: "red" }}
+                                                aria-label="Not Paid"
+                                            />
+                                        )}
+                                    </td>
+                                    <td>
+                                        {reservation.isVisited ? (
+                                            <FontAwesomeIcon
+                                                icon={faCircleCheck}
+                                                style={{ color: "green" }}
+                                                aria-label="Visited"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faCircleXmark}
+                                                style={{ color: "red" }}
+                                                aria-label="Not Visited"
+                                            />
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </Table>
                 ) : (
                     <div className="no-reservations-container">

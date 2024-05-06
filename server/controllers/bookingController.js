@@ -1,6 +1,7 @@
 // Internal imports
 const Bookings = require("../models/Bookings");
 const Places = require("../models/Places");
+const Actors = require("../models/Actors");
 
 //Create new booking
 const createBooking = async (req, res, next) => {
@@ -163,8 +164,20 @@ const getBookingsByPlaceId = async (req, res, next) => {
             return;
         }
 
-        const bookings = await Bookings.find({ placeId: placeId });
+        let bookings = await Bookings.find({ placeId: placeId });
         if (bookings && bookings.length > 0) {
+            bookings = await Promise.all(
+                bookings.map(async (booking) => {
+                    const user = await Actors.findById(booking.userId);
+                    booking = booking.toObject();
+                    booking.guestName = user.name;
+                    booking.guestEmail = user.email;
+                    booking.price = place.price;
+                    delete booking.rating;
+                    delete booking.userId;
+                    return booking;
+                })
+            );
             res.status(200).json({
                 success: true,
                 message: "Bookings found",
