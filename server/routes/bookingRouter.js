@@ -8,6 +8,7 @@ const {
     getBookingsByUserId,
     updateRating,
     getBookingsByPlaceId,
+    getGuestByUserId,
 } = require("../controllers/bookingController");
 const {
     createBookingValidators,
@@ -27,5 +28,6 @@ router.post(
 router.get("/", checkAuth, getBookingsByUserId);
 router.put("/:bookingId/rating", checkAuth, updateRating);
 router.get("/:placeId", checkAuth, getBookingsByPlaceId);
+router.get("/:guestId", checkAuth, getGuestByUserId);
 
 module.exports = router;
