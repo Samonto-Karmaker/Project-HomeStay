@@ -164,7 +164,7 @@ const getBookingsByPlaceId = async (req, res, next) => {
             return;
         }
 
-        let bookings = await Bookings.find({ placeId: placeId });
+        let bookings = await Bookings.find({ placeId: placeId }).select('-rating');
         if (bookings && bookings.length > 0) {
             bookings = await Promise.all(
                 bookings.map(async (booking) => {
@@ -173,8 +173,6 @@ const getBookingsByPlaceId = async (req, res, next) => {
                     booking.guestName = user.name;
                     booking.guestEmail = user.email;
                     booking.price = place.price;
-                    delete booking.rating;
-                    delete booking.userId;
                     return booking;
                 })
             );
@@ -199,9 +197,37 @@ const getBookingsByPlaceId = async (req, res, next) => {
     }
 };
 
+// Get guest by booking id
+const getGuestByUserId = async (req, res, next) => {
+    try {
+        const guestId = req.params.guestId;
+        const guest = await Actors.findById(guestId).select('-password');
+        if (guest) {
+            res.status(200).json({
+                success: true,
+                message: "Guest found",
+                guest: guest,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "Guest not found",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     createBooking,
     getBookingsByUserId,
     updateRating,
     getBookingsByPlaceId,
+    getGuestByUserId,
 };
