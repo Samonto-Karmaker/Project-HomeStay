@@ -2,6 +2,14 @@
 const Bookings = require("../models/Bookings");
 const Places = require("../models/Places");
 const Actors = require("../models/Actors");
+const Notifications = require("../models/Notifications");
+
+// Constants
+const STATUS_MESSAGES = {
+    isConfirmed: "Your booking has been confirmed",
+    isPaid: "Your payment has been received",
+    isVisited: "Your visit has been recorded",
+};
 
 //Create new booking
 const createBooking = async (req, res, next) => {
@@ -164,7 +172,9 @@ const getBookingsByPlaceId = async (req, res, next) => {
             return;
         }
 
-        let bookings = await Bookings.find({ placeId: placeId }).select('-rating');
+        let bookings = await Bookings.find({ placeId: placeId }).select(
+            "-rating"
+        );
         if (bookings && bookings.length > 0) {
             bookings = await Promise.all(
                 bookings.map(async (booking) => {
@@ -197,9 +207,71 @@ const getBookingsByPlaceId = async (req, res, next) => {
     }
 };
 
+// Approve booking status and send notification to guest
+const approveBooking = async (req, res, next) => {
+    try {
+        if (!req.user.isOwner) {
+            res.status(403).json({
+                success: false,
+                message: "You are not authorized to approve booking",
+            });
+            return;
+        }
+
+        const bookingId = req.params.bookingId;
+        const status = req.body.status;
+        const message = STATUS_MESSAGES[status];
+        if (!message) {
+            res.status(400).json({
+                success: false,
+                message: "Invalid status",
+            });
+        }
+
+        const booking = await Bookings.findById(bookingId);
+        if (!booking) {
+            res.status(404).json({
+                success: false,
+                message: "Booking not found",
+            });
+            return;
+        }
+        if (booking[status]) {
+            res.status(400).json({
+                success: false,
+                message: "Booking is already confirmed",
+            });
+            return;
+        }
+
+        booking[status] = true;
+        await booking.save();
+
+        const notification = new Notifications({
+            title: "Approval",
+            message: message,
+            userId: booking.userId,
+        });
+        await notification.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Booking status updated",
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
 module.exports = {
     createBooking,
     getBookingsByUserId,
     updateRating,
     getBookingsByPlaceId,
+    approveBooking
 };
