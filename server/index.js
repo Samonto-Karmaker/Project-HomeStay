@@ -11,6 +11,7 @@ const authRouter = require('./routes/authRouter');
 const { pushDummyPlaces, isAvailabilityStatusValid } = require('./controllers/placeController');
 const placeRouter = require('./routes/placeRouter');
 const bookingRouter = require('./routes/bookingRouter');
+const notificationRouter = require('./routes/notificationRouter');
 
 //Initialization
 const app = express();
@@ -42,6 +43,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use("/api", authRouter)
 app.use("/api/places", placeRouter)
 app.use("/api/bookings", bookingRouter)
+app.use("/api/notifications", notificationRouter)
 
 //Enable all CORS requests
 app.use(cors())
