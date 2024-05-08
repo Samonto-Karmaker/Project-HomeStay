@@ -1,5 +1,5 @@
 // Internal Imports
-const Notification = require("../models/notificationModel");
+const Notification = require("../models/Notifications");
 
 // Get Notifications
 const getNotifications = async (req, res, next) => {
