@@ -28,6 +28,6 @@ router.post(
 router.get("/", checkAuth, getBookingsByUserId);
 router.put("/:bookingId/rating", checkAuth, updateRating);
 router.get("/:placeId", checkAuth, getBookingsByPlaceId);
-router.get("/:guestId", checkAuth, getGuestByUserId);
+router.get("/guest-info/:guestId", checkAuth, getGuestByUserId);
 
 module.exports = router;
