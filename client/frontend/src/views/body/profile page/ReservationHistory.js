@@ -43,7 +43,7 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
     });
 
     return (
-        <Modal show={showModal} onHide={onHide} size="lg">
+        <Modal show={showModal} onHide={onHide} size={reservations.length > 0 ? "xl" : "md"}>
             <Modal.Header closeButton>
                 <Modal.Title>Reservation History</Modal.Title>
             </Modal.Header>
@@ -56,6 +56,7 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                             <tr>
                                 <th>Guest Name</th>
                                 <th>Guest Email</th>
+                                <th>Total Guests</th>
                                 <th>Check In</th>
                                 <th>Check Out</th>
                                 <th>Total Amount</th>
@@ -69,6 +70,7 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                 <tr key={reservation._id}>
                                     <td>{reservation.guestName}</td>
                                     <td>{reservation.guestEmail}</td>
+                                    <td>{reservation.guests}</td>
                                     <td>
                                         {new Date(
                                             reservation.checkIn
