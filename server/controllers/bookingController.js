@@ -197,37 +197,9 @@ const getBookingsByPlaceId = async (req, res, next) => {
     }
 };
 
-// Get guest by booking id
-const getGuestByUserId = async (req, res, next) => {
-    try {
-        const guestId = req.params.guestId;
-        const guest = await Actors.findById(guestId).select('-password');
-        if (guest) {
-            res.status(200).json({
-                success: true,
-                message: "Guest found",
-                guest: guest,
-            });
-        } else {
-            res.status(404).json({
-                success: false,
-                message: "Guest not found",
-            });
-        }
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    }
-}
-
 module.exports = {
     createBooking,
     getBookingsByUserId,
     updateRating,
     getBookingsByPlaceId,
-    getGuestByUserId,
 };
