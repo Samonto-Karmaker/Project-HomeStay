@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Modal, Table, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
@@ -7,11 +7,8 @@ import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 const ReservationHistory = ({ showModal, onHide, placeId }) => {
     const [reservations, setReservations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [confirm, setConfirm] = useState(false);
-    const [paid, setPaid] = useState(false);
-    const [visited, setVisited] = useState(false);
 
-    const fetchReservationHistory = async () => {
+    const fetchReservationHistory = useCallback(async () => {
         try {
             const response = await fetch(`/api/bookings/${placeId}`, {
                 method: "GET",
@@ -36,22 +33,38 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [placeId]);
 
-    const handleApproval = (name, value) => {
-        if (name === "confirm") {
-            setConfirm(value);
-        } else if (name === "paid") {
-            setPaid(value);
-        } else if (name === "visited") {
-            setVisited(value);
+    const handleApproval = async (name, bookingId) => {
+        if(window.confirm("Are you sure you want to approve this reservation?")) {
+            try {
+                const response = await fetch(`/api/bookings/${bookingId}/approve`, {
+                    method: "PUT",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status: name }),
+                });
+                const result = await response.json();
+                if (result.success) {
+                    fetchReservationHistory();
+                    window.alert(`Reservation ${name} successfully`);
+                }
+                else {
+                    window.alert(result.message);
+                }
+            }
+            catch (error) {
+                console.log(error);
+                window.alert("Something went wrong");
+            }
         }
-        console.log(`name: ${name}, value: ${value}`)
     };
 
     useEffect(() => {
         fetchReservationHistory();
-    }, []);
+    }, [fetchReservationHistory]);
 
     return (
         <Modal
@@ -115,12 +128,12 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                         ) : (
                                             <Form.Check
                                                 type="switch"
-                                                name="confirm"
-                                                checked={confirm}
+                                                name="isConfirmed"
+                                                checked={reservation.isConfirmed}
                                                 onChange={(e) =>
                                                     handleApproval(
                                                         e.target.name,
-                                                        e.target.checked
+                                                        reservation._id
                                                     )
                                                 }
                                             />
@@ -136,12 +149,12 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                         ) : (
                                             <Form.Check
                                                 type="switch"
-                                                name="paid"
-                                                checked={paid}
+                                                name="isPaid"
+                                                checked={reservation.isPaid}
                                                 onChange={(e) =>
                                                     handleApproval(
                                                         e.target.name,
-                                                        e.target.checked
+                                                        reservation._id
                                                     )
                                                 }
                                             />
@@ -157,12 +170,12 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                         ) : (
                                             <Form.Check
                                                 type="switch"
-                                                name="visited"
-                                                checked={visited}
+                                                name="isVisited"
+                                                checked={reservation.isVisited}
                                                 onChange={(e) =>
                                                     handleApproval(
                                                         e.target.name,
-                                                        e.target.checked
+                                                        reservation._id
                                                     )
                                                 }
                                             />
