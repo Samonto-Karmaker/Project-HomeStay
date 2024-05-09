@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, ListGroup } from "react-bootstrap";
+import { UserContext } from "../../components/context/UserContext"
 
 const NotificationModal = ({ showModal, onHide }) => {
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { User } = useContext(UserContext);
 
     const fetchNotification = async () => {
         try {
@@ -33,8 +36,10 @@ const NotificationModal = ({ showModal, onHide }) => {
     };
 
     useEffect(() => {
-        fetchNotification();
-    }, []);
+        if (User) {
+            fetchNotification();
+        }
+    }, [User]);
 
     return (
         <Modal
