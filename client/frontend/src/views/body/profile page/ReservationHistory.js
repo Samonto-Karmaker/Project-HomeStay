@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table } from "react-bootstrap";
+import { Modal, Table, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCircleCheck,
-    faCircleXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
 
 const ReservationHistory = ({ showModal, onHide, placeId }) => {
     const [reservations, setReservations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [confirm, setConfirm] = useState(false);
+    const [paid, setPaid] = useState(false);
+    const [visited, setVisited] = useState(false);
 
     const fetchReservationHistory = async () => {
         try {
@@ -38,12 +38,27 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
         }
     };
 
+    const handleApproval = (name, value) => {
+        if (name === "confirm") {
+            setConfirm(value);
+        } else if (name === "paid") {
+            setPaid(value);
+        } else if (name === "visited") {
+            setVisited(value);
+        }
+        console.log(`name: ${name}, value: ${value}`)
+    };
+
     useEffect(() => {
         fetchReservationHistory();
-    });
+    }, []);
 
     return (
-        <Modal show={showModal} onHide={onHide} size={reservations.length > 0 ? "xl" : "md"}>
+        <Modal
+            show={showModal}
+            onHide={onHide}
+            size={reservations.length > 0 ? "xl" : "md"}
+        >
             <Modal.Header closeButton>
                 <Modal.Title>Reservation History</Modal.Title>
             </Modal.Header>
@@ -98,10 +113,16 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                                 aria-label="Confirmed"
                                             />
                                         ) : (
-                                            <FontAwesomeIcon
-                                                icon={faCircleXmark}
-                                                style={{ color: "red" }}
-                                                aria-label="Not Confirmed"
+                                            <Form.Check
+                                                type="switch"
+                                                name="confirm"
+                                                checked={confirm}
+                                                onChange={(e) =>
+                                                    handleApproval(
+                                                        e.target.name,
+                                                        e.target.checked
+                                                    )
+                                                }
                                             />
                                         )}
                                     </td>
@@ -113,10 +134,16 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                                 aria-label="Paid"
                                             />
                                         ) : (
-                                            <FontAwesomeIcon
-                                                icon={faCircleXmark}
-                                                style={{ color: "red" }}
-                                                aria-label="Not Paid"
+                                            <Form.Check
+                                                type="switch"
+                                                name="paid"
+                                                checked={paid}
+                                                onChange={(e) =>
+                                                    handleApproval(
+                                                        e.target.name,
+                                                        e.target.checked
+                                                    )
+                                                }
                                             />
                                         )}
                                     </td>
@@ -128,10 +155,16 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                                 aria-label="Visited"
                                             />
                                         ) : (
-                                            <FontAwesomeIcon
-                                                icon={faCircleXmark}
-                                                style={{ color: "red" }}
-                                                aria-label="Not Visited"
+                                            <Form.Check
+                                                type="switch"
+                                                name="visited"
+                                                checked={visited}
+                                                onChange={(e) =>
+                                                    handleApproval(
+                                                        e.target.name,
+                                                        e.target.checked
+                                                    )
+                                                }
                                             />
                                         )}
                                     </td>
