@@ -108,7 +108,7 @@ const PlaceReserve = ({ placeId, price, isAvailable }) => {
                             <Form.Control
                                 type="number"
                                 min="1"
-                                value="1"
+                                value={guests}
                                 onChange={(e) => setGuests(e.target.value)}
                             />
                         </Col>

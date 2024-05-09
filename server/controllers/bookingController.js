@@ -19,6 +19,16 @@ const createBooking = async (req, res, next) => {
             userId: req.user.userId,
         });
         await newBooking.save();
+
+        const place = await Places.findById(req.body.placeId).select("name ownerId");
+
+        const notification = new Notifications({
+            title: "Request for booking at " + place.name,
+            message: `${req.user.name} has requested to book your place: ${place.name}`,
+            userId: place.ownerId,
+        });
+        await notification.save();
+
         res.status(201).json({
             success: true,
             message: "Booking created successfully",
@@ -247,8 +257,10 @@ const approveBooking = async (req, res, next) => {
         booking[status] = true;
         await booking.save();
 
+        const placeName = await Places.findById(booking.placeId).select("name");
+
         const notification = new Notifications({
-            title: "Approval",
+            title: "Approval for booking at " + placeName.name,
             message: message,
             userId: booking.userId,
         });
