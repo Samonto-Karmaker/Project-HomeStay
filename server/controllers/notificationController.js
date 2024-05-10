@@ -5,7 +5,9 @@ const Notification = require("../models/Notifications");
 const getNotifications = async (req, res, next) => {
     try {
         const userId = req.user.userId;
-        let notifications = await Notification.find({ userId: userId });
+        let notifications = await Notification.find({ userId: userId }).sort({
+            createdAt: -1,
+        });
         if (notifications && notifications.length > 0) {
             res.status(200).json({
                 success: true,
@@ -30,4 +32,4 @@ const getNotifications = async (req, res, next) => {
 
 module.exports = {
     getNotifications,
-}
+};

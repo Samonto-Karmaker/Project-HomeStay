@@ -20,7 +20,9 @@ const createBooking = async (req, res, next) => {
         });
         await newBooking.save();
 
-        const place = await Places.findById(req.body.placeId).select("name ownerId");
+        const place = await Places.findById(req.body.placeId).select(
+            "name ownerId"
+        );
 
         const notification = new Notifications({
             title: "Request for booking at " + place.name,
@@ -182,9 +184,9 @@ const getBookingsByPlaceId = async (req, res, next) => {
             return;
         }
 
-        let bookings = await Bookings.find({ placeId: placeId }).select(
-            "-rating"
-        );
+        let bookings = await Bookings.find({ placeId: placeId })
+            .sort({ createAt: -1 })
+            .select("-rating");
         if (bookings && bookings.length > 0) {
             bookings = await Promise.all(
                 bookings.map(async (booking) => {
@@ -270,7 +272,6 @@ const approveBooking = async (req, res, next) => {
             success: true,
             message: "Booking status updated",
         });
-        
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -285,5 +286,5 @@ module.exports = {
     getBookingsByUserId,
     updateRating,
     getBookingsByPlaceId,
-    approveBooking
+    approveBooking,
 };
