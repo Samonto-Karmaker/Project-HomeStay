@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Modal, ListGroup } from "react-bootstrap";
-import { UserContext } from "../../components/context/UserContext"
+import { UserContext } from "../../components/context/UserContext";
 
 const NotificationModal = ({ showModal, onHide }) => {
     const [notifications, setNotifications] = useState([]);
@@ -50,17 +50,30 @@ const NotificationModal = ({ showModal, onHide }) => {
             <Modal.Header closeButton>
                 <Modal.Title>Notification</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{maxHeight: "500px", overflowY: "auto"}}>
                 {isLoading ? (
                     <h1>Loading...</h1>
                 ) : notifications.length > 0 ? (
                     <ListGroup>
                         {notifications.map((notification, index) => (
-                            <ListGroup.Item key={index}>
-                                <h5>{notification.title}</h5>
+                            <ListGroup.Item
+                                key={index}
+                                style={{
+                                    margin: "5px",
+                                    border: "1px solid",
+                                    borderColor: "#f8f9fa",
+                                    borderRadius: "20px",
+                                    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)"
+                                }}
+                            >
+                                <h5 style={{ color: "red" }}>
+                                    {notification.title}
+                                </h5>
                                 <p>{notification.message}</p>
-                                <small>
-                                    {new Date(notification.createdAt).toDateString()}
+                                <small style={{ color: "gray" }}>
+                                    {new Date(
+                                        notification.createdAt
+                                    ).toDateString()}
                                 </small>
                             </ListGroup.Item>
                         ))}
