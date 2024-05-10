@@ -130,6 +130,7 @@ const UserDashBoard = () => {
                             <td>
                                 {booking.rating === 0 ? (
                                     <Form.Select
+                                        disabled={!booking.isVisited}
                                         onChange={(e) =>
                                             setSelectedBooking({
                                                 bookingId: booking._id,

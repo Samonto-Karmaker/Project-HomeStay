@@ -115,6 +115,13 @@ const updateRating = async (req, res, next) => {
                 });
                 return;
             }
+            if (!booking.isVisited) {
+                res.status(400).json({
+                    success: false,
+                    message: "Booking not visited yet",
+                });
+                return;
+            }
 
             booking.rating = rating;
             await booking.save();
