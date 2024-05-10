@@ -150,6 +150,7 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <Form.Check
                                                 type="switch"
                                                 name="isPaid"
+                                                disabled={!reservation.isConfirmed}
                                                 checked={reservation.isPaid}
                                                 onChange={(e) =>
                                                     handleApproval(
@@ -171,6 +172,7 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <Form.Check
                                                 type="switch"
                                                 name="isVisited"
+                                                disabled={!reservation.isConfirmed}
                                                 checked={reservation.isVisited}
                                                 onChange={(e) =>
                                                     handleApproval(

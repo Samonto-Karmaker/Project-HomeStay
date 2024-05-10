@@ -262,6 +262,13 @@ const approveBooking = async (req, res, next) => {
             });
             return;
         }
+        if(status !== "isConfirmed" && !booking.isConfirmed){
+            res.status(400).json({
+                success: false,
+                message: "Booking is not confirmed",
+            });
+            return;
+        }
 
         booking[status] = true;
         await booking.save();
