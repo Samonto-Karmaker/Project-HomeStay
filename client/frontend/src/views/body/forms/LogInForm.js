@@ -71,7 +71,7 @@ const LogInForm = ({closeModal, toggle}) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <h3 style={{ paddingTop: "5px", paddingBottom: "5px" }}>Welcome to Airbnb Clone</h3>
+            <h3 style={{ paddingTop: "5px", paddingBottom: "5px" }}>Welcome to Project HomeStay</h3>
             <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
