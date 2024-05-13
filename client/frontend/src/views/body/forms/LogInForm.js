@@ -1,11 +1,13 @@
 import React, {useState, useContext} from "react";
 import {UserContext} from "../../../components/context/UserContext";
+import { SocketContext } from "../../../components/context/SocketContext";
 import {Form} from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const LogInForm = ({closeModal, toggle}) => {
 
     const {setUser} = useContext(UserContext);
+    const socket = useContext(SocketContext);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -46,6 +48,7 @@ const LogInForm = ({closeModal, toggle}) => {
             const result = await response.json();
             if(result.success){
                 setUser(result.loggedInUser);
+                socket.emit("login", result.loggedInUser.userId);
                 removeErrors();
                 window.alert("Logged in successfully!");
                 setTimeout(() => {

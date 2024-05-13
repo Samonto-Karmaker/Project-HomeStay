@@ -3,7 +3,7 @@ import "./App.css";
 import { UserProvider } from "./components/context/UserContext";
 import { BrowserRouter } from "react-router-dom";
 import MainComponent from "./views/MainComponent";
-import { SocketProvider } from "./components/context/SocketContex";
+import { SocketProvider } from "./components/context/SocketContext";
 
 const App = () => {
     return (

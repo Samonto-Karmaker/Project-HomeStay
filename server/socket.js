@@ -12,10 +12,12 @@ const setupSocket = (server) => {
 
         socket.on("login", (userId) => {
             socket.join(userId);
+            console.log(`User ${userId} joined`);
         });
 
         socket.on("logout", (userId) => {
             socket.leave(userId);
+            console.log(`User ${userId} left`);
         });
 
         socket.on("disconnect", () => {

@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
+import { SocketContext } from "../../../components/context/SocketContext";
 
 const UserInfo = ({ isUser, user, setUser }) => {
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
 
   const handleLogOut = async () => {
     if (window.confirm("Are you sure you want to log out?")) {
@@ -15,6 +17,7 @@ const UserInfo = ({ isUser, user, setUser }) => {
         });
         const result = await response.json();
         if (result.success) {
+          socket.emit("logout", user.userId);
           setUser(null);
           navigate("/");
         }
