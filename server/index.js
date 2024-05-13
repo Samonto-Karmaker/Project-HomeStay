@@ -12,6 +12,7 @@ const { pushDummyPlaces, isAvailabilityStatusValid } = require('./controllers/pl
 const placeRouter = require('./routes/placeRouter');
 const bookingRouter = require('./routes/bookingRouter');
 const notificationRouter = require('./routes/notificationRouter');
+const setupSocket = require("./socket");
 
 //Initialization
 const app = express();
@@ -49,6 +50,10 @@ app.use("/api/notifications", notificationRouter)
 app.use(cors())
 
 //Server listening
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
     console.log(`Server running on PORT ${process.env.PORT}`);
 });
+
+//Socket setup
+const io = setupSocket(server);
+app.set("io", io);
