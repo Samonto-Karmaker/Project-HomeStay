@@ -13,6 +13,7 @@ const placeRouter = require('./routes/placeRouter');
 const bookingRouter = require('./routes/bookingRouter');
 const notificationRouter = require('./routes/notificationRouter');
 const { setupSocket } = require("./socket");
+const { checkBookingStatus } = require('./controllers/bookingController');
 
 //Initialization
 const app = express();
@@ -27,6 +28,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_URL, {
 .then(() => {
     pushDummyPlaces();
     isAvailabilityStatusValid();
+    checkBookingStatus();
 })
 .catch((err) => console.log(`Error: ${err}`));
 

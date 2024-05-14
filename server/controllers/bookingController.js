@@ -4,12 +4,72 @@ const Places = require("../models/Places");
 const Actors = require("../models/Actors");
 const Notifications = require("../models/Notifications");
 const { emitNotification } = require("../socket");
+const { areDatesEqual } = require("../utilities/dateComparison");
 
 // Constants
 const STATUS_MESSAGES = {
     isConfirmed: "Your booking has been confirmed",
     isPaid: "Your payment has been received",
     isVisited: "Your visit has been recorded",
+};
+
+// Check if all the bookings are confirmed in due time
+const checkBookingStatus = async () => {
+    try {
+        console.log("Checking booking status...");
+        const today = new Date();
+        const bookings = await Bookings.find({
+            checkIn: { $lte: today },
+            isConfirmed: false,
+        });
+        if (bookings && bookings.length > 0) {
+            for (const booking of bookings) {
+                try {
+                    const place = await Places.findById(booking.placeId).select(
+                        "ownerId, name"
+                    );
+                    if (place) {
+                        if (areDatesEqual(booking.checkIn, today)) {
+                            const notification = new Notifications({
+                                title: "Booking confirmation",
+                                message: `Please confirm the booking for ${place.name} by today to avoid cancellation`,
+                                userId: place.ownerId,
+                            });
+                            await notification.save();
+                            emitNotification(place.ownerId, notification);
+                        } else {
+                            const notificationToBooker = new Notifications({
+                                title: "Booking cancellation",
+                                message: `Your booking for ${place.name} has been cancelled due to non-confirmation`,
+                                userId: booking.userId,
+                            });
+                            const notificationToOwner = new Notifications({
+                                title: "Booking cancellation",
+                                message: `Booking for ${place.name} has been cancelled due to non-confirmation`,
+                                userId: place.ownerId,
+                            });
+    
+                            await Promise.all([
+                                notificationToBooker.save(),
+                                notificationToOwner.save()
+                            ]);
+    
+                            emitNotification(booking.userId, notificationToBooker);
+                            emitNotification(place.ownerId, notificationToOwner);
+                            
+                            console.log(`Booking ${booking._id} cancelled due to non-confirmation`);
+                            await Bookings.findByIdAndDelete(booking._id);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error processing ${booking._id}: ${error}`);
+                }
+            }
+        }
+        console.log("Booking status checked");
+    } catch (error) {
+        console.error(`Error in checkBookingStatus: ${error}`);
+    }
 };
 
 //Create new booking
@@ -264,7 +324,7 @@ const approveBooking = async (req, res, next) => {
             });
             return;
         }
-        if(status !== "isConfirmed" && !booking.isConfirmed){
+        if (status !== "isConfirmed" && !booking.isConfirmed) {
             res.status(400).json({
                 success: false,
                 message: "Booking is not confirmed",
@@ -284,7 +344,6 @@ const approveBooking = async (req, res, next) => {
         });
         await notification.save();
 
-        const io = req.app.get("io");
         emitNotification(booking.userId, notification);
 
         res.status(200).json({
@@ -306,4 +365,5 @@ module.exports = {
     updateRating,
     getBookingsByPlaceId,
     approveBooking,
+    checkBookingStatus,
 };
