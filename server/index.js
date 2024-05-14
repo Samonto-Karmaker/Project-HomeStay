@@ -12,7 +12,7 @@ const { pushDummyPlaces, isAvailabilityStatusValid } = require('./controllers/pl
 const placeRouter = require('./routes/placeRouter');
 const bookingRouter = require('./routes/bookingRouter');
 const notificationRouter = require('./routes/notificationRouter');
-const setupSocket = require("./socket");
+const { setupSocket } = require("./socket");
 
 //Initialization
 const app = express();
@@ -56,4 +56,3 @@ const server = app.listen(process.env.PORT, () => {
 
 //Socket setup
 const io = setupSocket(server);
-app.set("io", io);

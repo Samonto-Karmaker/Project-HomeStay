@@ -3,6 +3,7 @@ const Bookings = require("../models/Bookings");
 const Places = require("../models/Places");
 const Actors = require("../models/Actors");
 const Notifications = require("../models/Notifications");
+const { emitNotification } = require("../socket");
 
 // Constants
 const STATUS_MESSAGES = {
@@ -30,6 +31,7 @@ const createBooking = async (req, res, next) => {
             userId: place.ownerId,
         });
         await notification.save();
+        emitNotification(place.ownerId, notification);
 
         res.status(201).json({
             success: true,
@@ -281,6 +283,9 @@ const approveBooking = async (req, res, next) => {
             userId: booking.userId,
         });
         await notification.save();
+
+        const io = req.app.get("io");
+        emitNotification(booking.userId, notification);
 
         res.status(200).json({
             success: true,
