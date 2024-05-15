@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCircleCheck,
     faCircleXmark,
+    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import StarRatings from "react-star-ratings";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
+import RegularBtn from "../../../components/reusable/RegularBtn";
 
 const UserDashBoard = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -110,6 +112,7 @@ const UserDashBoard = () => {
                         <th>Confirmation Status</th>
                         <th>Payment Status</th>
                         <th>Visit Status</th>
+                        <th>Cancel Booking</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -225,6 +228,15 @@ const UserDashBoard = () => {
                                         aria-label="Not Visited"
                                     />
                                 )}
+                            </td>
+                            <td>
+                                <RegularBtn
+                                    disabled={booking.isVisited}
+                                >
+                                    <FontAwesomeIcon 
+                                        icon={faTrash}
+                                    />
+                                </RegularBtn>
                             </td>
                         </tr>
                     ))}
