@@ -542,6 +542,7 @@ const cancelBooking = async (req, res, next) => {
             await notificationToOwner.save();
             emitNotification(place.ownerId, notificationToOwner);
         }
+        await Bookings.findByIdAndDelete(bookingId);
     } catch (error) {
         console.log(error);
         res.status(500).json({

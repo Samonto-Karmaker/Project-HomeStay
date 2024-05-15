@@ -78,6 +78,29 @@ const UserDashBoard = () => {
             }
         }
     };
+    
+    const handleBookingCancel = async (bookingId) => {
+        if (window.confirm("Are you sure you want to cancel this booking?")) {
+            try {
+                const response = await fetch(`/api/bookings/${bookingId}`, {
+                    method: "DELETE",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const result = await response.json();
+                if (result.success) {
+                    fetchBookings();
+                } else {
+                    window.alert(result.message);
+                }
+            } catch (error) {
+                console.log(error);
+                window.alert("Something went wrong");
+            }
+        }
+    };
 
     useEffect(() => {
         fetchBookings();
@@ -232,6 +255,7 @@ const UserDashBoard = () => {
                             <td>
                                 <RegularBtn
                                     disabled={booking.isVisited}
+                                    onClick={() => handleBookingCancel(booking._id)}
                                 >
                                     <FontAwesomeIcon 
                                         icon={faTrash}
