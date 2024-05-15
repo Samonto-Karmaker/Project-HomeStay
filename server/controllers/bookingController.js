@@ -4,7 +4,7 @@ const Places = require("../models/Places");
 const Actors = require("../models/Actors");
 const Notifications = require("../models/Notifications");
 const { emitNotification } = require("../socket");
-const { areDatesEqual } = require("../utilities/dateComparison");
+const { areDatesEqual, isBookingClash } = require("../utilities/dateComparison");
 
 // Constants
 const STATUS_MESSAGES = {
@@ -214,6 +214,21 @@ const checkBookingVisit = async () => {
 //Create new booking
 const createBooking = async (req, res, next) => {
     try {
+        // Check if the place is already booked for these dates
+        const { checkIn, checkOut, placeId } = req.body;
+        const existingBooking = await Bookings.find({ placeId: placeId });
+        if (existingBooking && existingBooking.length > 0) {
+            for (const booking of existingBooking) {
+                if (isBookingClash(checkIn, checkOut, booking)) {
+                    res.status(400).json({
+                        success: false,
+                        message: "Place is already booked for these dates",
+                    });
+                    return;
+                }
+            }
+        }
+
         const newBooking = new Bookings({
             ...req.body,
             userId: req.user.userId,
