@@ -6,6 +6,24 @@
   font-family: Bradly hand, cursive;
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer {
+  margin-top: auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  color: gray;
+}
+
+.footer h4 {
+  font-weight: bolder;
+  color: red;
+}
+
 .NavUserBtn:hover, .NavUserBtn:active {
   background-color: red !important;
   color: white !important;
