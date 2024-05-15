@@ -470,6 +470,13 @@ const approveBooking = async (req, res, next) => {
             });
             return;
         }
+        if (status === "isVisited" && booking.checkIn > new Date().setHours(0, 0, 0, 0)) {
+            res.status(400).json({
+                success: false,
+                message: "Booking check-in date is in the future",
+            });
+            return;
+        }
 
         booking[status] = true;
         await booking.save();

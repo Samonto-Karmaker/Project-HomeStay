@@ -36,26 +36,29 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
     }, [placeId]);
 
     const handleApproval = async (name, bookingId) => {
-        if(window.confirm("Are you sure you want to approve this reservation?")) {
+        if (
+            window.confirm("Are you sure you want to approve this reservation?")
+        ) {
             try {
-                const response = await fetch(`/api/bookings/${bookingId}/approve`, {
-                    method: "PUT",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ status: name }),
-                });
+                const response = await fetch(
+                    `/api/bookings/${bookingId}/approve`,
+                    {
+                        method: "PUT",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ status: name }),
+                    }
+                );
                 const result = await response.json();
                 if (result.success) {
                     fetchReservationHistory();
                     window.alert(`Reservation ${name} successfully`);
-                }
-                else {
+                } else {
                     window.alert(result.message);
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
                 window.alert("Something went wrong");
             }
@@ -129,7 +132,9 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <Form.Check
                                                 type="switch"
                                                 name="isConfirmed"
-                                                checked={reservation.isConfirmed}
+                                                checked={
+                                                    reservation.isConfirmed
+                                                }
                                                 onChange={(e) =>
                                                     handleApproval(
                                                         e.target.name,
@@ -150,7 +155,9 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <Form.Check
                                                 type="switch"
                                                 name="isPaid"
-                                                disabled={!reservation.isConfirmed}
+                                                disabled={
+                                                    !reservation.isConfirmed
+                                                }
                                                 checked={reservation.isPaid}
                                                 onChange={(e) =>
                                                     handleApproval(
@@ -172,7 +179,12 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <Form.Check
                                                 type="switch"
                                                 name="isVisited"
-                                                disabled={!reservation.isConfirmed}
+                                                disabled={
+                                                    !reservation.isConfirmed ||
+                                                    new Date(
+                                                        reservation.checkOut
+                                                    ) > new Date()
+                                                }
                                                 checked={reservation.isVisited}
                                                 onChange={(e) =>
                                                     handleApproval(
