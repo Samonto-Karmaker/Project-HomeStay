@@ -505,6 +505,52 @@ const approveBooking = async (req, res, next) => {
     }
 };
 
+// Cancel booking
+const cancelBooking = async (req, res, next) => {
+    try {
+        const bookingId = req.params.bookingId;
+        const booking = await Bookings.findById(bookingId);
+        if (!booking) {
+            res.status(404).json({
+                success: false,
+                message: "Booking not found",
+            });
+            return;
+        }
+        if (booking.userId.toString() !== req.user.userId) {
+            res.status(403).json({
+                success: false,
+                message: "You are not authorized to cancel this booking",
+            });
+            return;
+        }
+        if (booking.isVisited) {
+            res.status(400).json({
+                success: false,
+                message: "Booking already visited",
+            });
+            return;
+        }
+
+        const place = await Places.findById(booking.placeId).select("ownerId name");
+        if (place) {
+            const notificationToOwner = new Notifications({
+                title: TITLE_MESSAGES.cancellation,
+                message: `Booking for ${place.name} has been cancelled by ${req.user.name}`,
+                userId: place.ownerId,
+            });
+            await notificationToOwner.save();
+            emitNotification(place.ownerId, notificationToOwner);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 module.exports = {
     createBooking,
     getBookingsByUserId,
@@ -513,4 +559,5 @@ module.exports = {
     approveBooking,
     checkBookingStatus,
     checkBookingVisit,
+    cancelBooking,
 };

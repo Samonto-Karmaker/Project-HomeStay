@@ -9,6 +9,7 @@ const {
     updateRating,
     getBookingsByPlaceId,
     approveBooking,
+    cancelBooking,
 } = require("../controllers/bookingController");
 const {
     createBookingValidators,
@@ -29,5 +30,6 @@ router.get("/", checkAuth, getBookingsByUserId);
 router.put("/:bookingId/rating", checkAuth, updateRating);
 router.get("/:placeId", checkAuth, getBookingsByPlaceId);
 router.put("/:bookingId/approve", checkAuth, approveBooking);
+router.delete("/:bookingId", checkAuth, cancelBooking);
 
 module.exports = router;
