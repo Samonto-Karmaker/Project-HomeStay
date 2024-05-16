@@ -4,7 +4,10 @@ const Places = require("../models/Places");
 const Actors = require("../models/Actors");
 const Notifications = require("../models/Notifications");
 const { emitNotification } = require("../socket");
-const { areDatesEqual, isBookingClash } = require("../utilities/dateComparison");
+const {
+    areDatesEqual,
+    isBookingClash,
+} = require("../utilities/dateComparison");
 const { getNearestUnavailableBlock } = require("./placeController");
 
 // Constants
@@ -485,7 +488,11 @@ const approveBooking = async (req, res, next) => {
             });
             return;
         }
-        if (status === "isVisited" && booking.checkIn > new Date().setHours(0, 0, 0, 0)) {
+        if (
+            status === "isVisited" &&
+            new Date(booking.checkIn).setHours(0, 0, 0, 0) >
+                new Date().setHours(0, 0, 0, 0)
+        ) {
             res.status(400).json({
                 success: false,
                 message: "Booking check-in date is in the future",
@@ -547,7 +554,9 @@ const cancelBooking = async (req, res, next) => {
             return;
         }
 
-        const place = await Places.findById(booking.placeId).select("ownerId name");
+        const place = await Places.findById(booking.placeId).select(
+            "ownerId name"
+        );
         if (place) {
             const notificationToOwner = new Notifications({
                 title: TITLE_MESSAGES.cancellation,
@@ -565,7 +574,7 @@ const cancelBooking = async (req, res, next) => {
             message: "Internal server error",
         });
     }
-}
+};
 
 module.exports = {
     createBooking,

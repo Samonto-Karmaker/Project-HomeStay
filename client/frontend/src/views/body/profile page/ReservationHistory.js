@@ -183,7 +183,10 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                                     !reservation.isConfirmed ||
                                                     new Date(
                                                         reservation.checkOut
-                                                    ) > new Date()
+                                                    ).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) ||
+                                                    new Date(
+                                                        reservation.checkIn
+                                                    ).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
                                                 }
                                                 checked={reservation.isVisited}
                                                 onChange={(e) =>

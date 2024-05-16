@@ -45,6 +45,8 @@ const emitNotification = (userId, notification) => {
     if(userSocket){
         userSocket.emit("notification", notification);
         console.log("YES!!!!!!!!")
+    } else {
+        console.log("NO!!!!!!!!");
     }
 }
 
