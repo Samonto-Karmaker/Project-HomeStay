@@ -5,6 +5,7 @@ const Actors = require("../models/Actors");
 const Notifications = require("../models/Notifications");
 const { emitNotification } = require("../socket");
 const { areDatesEqual, isBookingClash } = require("../utilities/dateComparison");
+const { getNearestUnavailableBlock } = require("./placeController");
 
 // Constants
 const STATUS_MESSAGES = {
@@ -216,10 +217,12 @@ const createBooking = async (req, res, next) => {
     try {
         // Check if the place is already booked for these dates
         const { checkIn, checkOut, placeId } = req.body;
+        const place = await Places.findById(placeId);
         const existingBooking = await Bookings.find({ placeId: placeId });
+
         if (existingBooking && existingBooking.length > 0) {
             for (const booking of existingBooking) {
-                if (isBookingClash(checkIn, checkOut, booking)) {
+                if (isBookingClash(checkIn, checkOut, booking, place)) {
                     res.status(400).json({
                         success: false,
                         message: "Place is already booked for these dates",
@@ -234,10 +237,7 @@ const createBooking = async (req, res, next) => {
             userId: req.user.userId,
         });
         await newBooking.save();
-
-        const place = await Places.findById(req.body.placeId).select(
-            "name ownerId"
-        );
+        getNearestUnavailableBlock(placeId, checkIn, checkOut);
 
         const notification = new Notifications({
             title: TITLE_MESSAGES.request + ": " + place.name,
