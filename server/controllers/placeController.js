@@ -58,6 +58,14 @@ const getNearestUnavailableBlock = async (bookings, place) => {
         const currentDate = new Date().setHours(0, 0, 0, 0);
         let isBlockFound = false;
 
+        if (isNotAvailableFrom && isNotAvailableTo) {
+            if (isNotAvailableTo < currentDate) {
+                isNotAvailableFrom = null;
+                isNotAvailableTo = null;
+                isBlockFound = true;
+            }
+        }
+
         const futureBookings = [...bookings]
             .filter((booking) => booking.checkOut > currentDate)
             .sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn));

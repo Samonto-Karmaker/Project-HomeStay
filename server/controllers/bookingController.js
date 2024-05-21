@@ -240,7 +240,9 @@ const createBooking = async (req, res, next) => {
             userId: req.user.userId,
         });
         await newBooking.save();
-        getNearestUnavailableBlock(placeId, checkIn, checkOut);
+
+        existingBooking.push(newBooking);
+        getNearestUnavailableBlock(existingBooking, place);
 
         const notification = new Notifications({
             title: TITLE_MESSAGES.request + ": " + place.name,
