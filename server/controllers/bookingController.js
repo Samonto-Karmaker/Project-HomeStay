@@ -349,6 +349,7 @@ const updateRating = async (req, res, next) => {
             if (place) {
                 const bookingCount = await Bookings.countDocuments({
                     placeId: place._id,
+                    rating: { $gt: 0 },
                 });
                 if (bookingCount === 0) {
                     res.status(404).json({
