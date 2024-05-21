@@ -240,7 +240,9 @@ const createBooking = async (req, res, next) => {
             userId: req.user.userId,
         });
         await newBooking.save();
-        getNearestUnavailableBlock(placeId, checkIn, checkOut);
+
+        existingBooking.push(newBooking);
+        getNearestUnavailableBlock(existingBooking, place);
 
         const notification = new Notifications({
             title: TITLE_MESSAGES.request + ": " + place.name,
@@ -349,6 +351,7 @@ const updateRating = async (req, res, next) => {
             if (place) {
                 const bookingCount = await Bookings.countDocuments({
                     placeId: place._id,
+                    rating: { $gt: 0 },
                 });
                 if (bookingCount === 0) {
                     res.status(404).json({
