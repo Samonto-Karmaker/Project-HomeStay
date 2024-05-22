@@ -5,6 +5,7 @@ const express = require("express")
 const {register, login, logout, getAuthUser} = require("../controllers/authController")
 const {registerValidator, registerValidatorHandler} = require("../middlewares/auth/register_validator")
 const { checkAuth } = require("../middlewares/common/protectPages")
+const avatarUploader = require("../middlewares/auth/avatarUploader")
 
 //Initializing Router
 const router = express.Router()
@@ -12,6 +13,7 @@ const router = express.Router()
 //Register
 router.post(
     "/register",
+    avatarUploader,
     registerValidator,
     registerValidatorHandler,
     register
