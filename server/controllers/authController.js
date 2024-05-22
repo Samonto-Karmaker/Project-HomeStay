@@ -11,6 +11,7 @@ const register = async (req, res, next) => {
         //Get data from request body
         const { name, email, mobile, password } = req.body;
 
+
         //Check if user already exists
         const user = await Actors.findOne({ email, mobile });
 
@@ -25,12 +26,23 @@ const register = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         //Create new user
-        const newUser = new Actors({
-            name,
-            email,
-            mobile,
-            password: hashedPassword
-        });
+        let newUser;
+        if (req.files && req.files.length > 0) {
+            newUser = new Actors({
+                name,
+                email,
+                mobile,
+                avatar: req.files[0].filename,
+                password: hashedPassword
+            })
+        } else {
+            newUser = new Actors({
+                name,
+                email,
+                mobile,
+                password: hashedPassword
+            });
+        }
 
         try {
             await newUser.save();
