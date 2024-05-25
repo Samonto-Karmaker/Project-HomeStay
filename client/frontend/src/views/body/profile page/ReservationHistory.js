@@ -3,6 +3,7 @@ import { Modal, Table, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import calculateTotalPrice from "../../../utilities/calculateTotalPrice";
+import UserAvatar from "../../../components/reusable/UserAvatar";
 
 const ReservationHistory = ({ showModal, onHide, placeId }) => {
     const [reservations, setReservations] = useState([]);
@@ -99,7 +100,25 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                         <tbody>
                             {reservations.map((reservation) => (
                                 <tr key={reservation._id}>
-                                    <td>{reservation.guestName}</td>
+                                    <td>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <UserAvatar
+                                                avatar={reservation.guestAvatar}
+                                                style={{
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    margin: "0 10px 0 0",
+                                                    border: "2px solid red",
+                                                }}
+                                            />
+                                            {reservation.guestName}
+                                        </div>
+                                    </td>
                                     <td>{reservation.guestEmail}</td>
                                     <td>{reservation.guests}</td>
                                     <td>
@@ -183,10 +202,22 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                                     !reservation.isConfirmed ||
                                                     new Date(
                                                         reservation.checkOut
-                                                    ).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) ||
+                                                    ).setHours(0, 0, 0, 0) <
+                                                        new Date().setHours(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        ) ||
                                                     new Date(
                                                         reservation.checkIn
-                                                    ).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
+                                                    ).setHours(0, 0, 0, 0) >
+                                                        new Date().setHours(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        )
                                                 }
                                                 checked={reservation.isVisited}
                                                 onChange={(e) =>

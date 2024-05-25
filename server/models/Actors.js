@@ -26,6 +26,9 @@ const ActorsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        avatar: {
+            type: String,
+        },
         isOwner: {
             type: Boolean,
             default: false,

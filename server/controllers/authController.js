@@ -11,6 +11,7 @@ const register = async (req, res, next) => {
         //Get data from request body
         const { name, email, mobile, password } = req.body;
 
+
         //Check if user already exists
         const user = await Actors.findOne({ email, mobile });
 
@@ -25,12 +26,23 @@ const register = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         //Create new user
-        const newUser = new Actors({
-            name,
-            email,
-            mobile,
-            password: hashedPassword
-        });
+        let newUser;
+        if (req.files && req.files.length > 0) {
+            newUser = new Actors({
+                name,
+                email,
+                mobile,
+                avatar: req.files[0].filename,
+                password: hashedPassword
+            })
+        } else {
+            newUser = new Actors({
+                name,
+                email,
+                mobile,
+                password: hashedPassword
+            });
+        }
 
         try {
             await newUser.save();
@@ -72,6 +84,7 @@ const login = async (req, res, next) => {
                     name: user.name,
                     email: user.email,
                     mobile: user.mobile,
+                    avatar: `${process.env.APP_URL}/images/Avatars/${user.avatar}`,
                     isOwner: user.isOwner,
                 }
                 const token = jwt.sign(userObject, process.env.JWT_SECRET, {
@@ -144,9 +157,38 @@ const getAuthUser = (req, res, next) => {
     }
 }
 
+// Update user avatar
+const updateAvatar = async (req, res, next) => {
+    try {
+        const user = await Actors.findById(req.user.userId);
+        if (user) {
+            if (req.files && req.files.length > 0) {
+                user.avatar = req.files[0].filename;
+            }
+            await user.save();
+            res.status(200).json({
+                success: true,
+                message: 'Avatar updated successfully',
+                avatar: `${process.env.APP_URL}/images/Avatars/${user.avatar}`,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
     logout,
     getAuthUser,
+    updateAvatar,
 }

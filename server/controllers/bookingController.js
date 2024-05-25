@@ -423,6 +423,7 @@ const getBookingsByPlaceId = async (req, res, next) => {
                     booking = booking.toObject();
                     booking.guestName = user.name;
                     booking.guestEmail = user.email;
+                    booking.guestAvatar = user.avatar;
                     booking.price = place.price;
                     return booking;
                 })
