@@ -23,7 +23,7 @@ const UserAvatar = ({ avatar, style }) => {
                 <Image
                     variant="top"
                     src="/no-photo.png"
-                    alt="User Avatar"
+                    alt="No Avatar"
                     style={{
                         width: "150px",
                         height: "150px",

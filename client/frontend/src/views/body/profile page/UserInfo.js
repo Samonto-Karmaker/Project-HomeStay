@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import RegularBtn from "../../../components/reusable/RegularBtn";
@@ -8,6 +8,8 @@ import { SocketContext } from "../../../components/context/SocketContext";
 const UserInfo = ({ isUser, user, setUser }) => {
     const navigate = useNavigate();
     const socket = useContext(SocketContext);
+
+    const fileInputRef = useRef();
 
     const handleLogOut = async () => {
         if (window.confirm("Are you sure you want to log out?")) {
@@ -28,6 +30,14 @@ const UserInfo = ({ isUser, user, setUser }) => {
                 window.alert("Something went wrong");
             }
         }
+    };
+
+    const handleAvatarClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const updateAvatar = () => {
+        console.log("Avatar Upload time!")
     };
 
     return (
@@ -56,7 +66,7 @@ const UserInfo = ({ isUser, user, setUser }) => {
                 Profile
             </Card.Header>
             <Card.Body>
-                <UserAvatar avatar={user.avatar} />
+                <UserAvatar avatar={null && user.avatar} />
                 <Card.Title
                     style={{
                         fontSize: "25px",
@@ -79,9 +89,20 @@ const UserInfo = ({ isUser, user, setUser }) => {
                         borderTop: "2px solid #f8f9fa",
                         display: "flex",
                         justifyContent: "center",
+                        gap: "10px",
                     }}
                 >
                     <RegularBtn onClick={handleLogOut}>Log Out</RegularBtn>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={updateAvatar}
+                        style={{ display: "none" }}
+                    />
+                    <RegularBtn onClick={handleAvatarClick}>
+                        {user.avatar ? "Update Avatar" : "Upload Avatar"}
+                    </RegularBtn>
                 </Card.Footer>
             )}
         </Card>
