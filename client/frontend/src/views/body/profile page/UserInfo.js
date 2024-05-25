@@ -36,8 +36,26 @@ const UserInfo = ({ isUser, user, setUser }) => {
         fileInputRef.current.click();
     };
 
-    const updateAvatar = () => {
-        console.log("Avatar Upload time!")
+    const updateAvatar = async (e) => {
+        const formData = new FormData();
+        formData.append("avatar", e.target.files[0]);
+        try {
+            const response = await fetch("/api/update-avatar", {
+                method: "PUT",
+                credentials: "include",
+                body: formData,
+            })
+            
+            const result = await response.json();
+            if (result.success) {
+                setUser({ ...user, avatar: result.avatar });
+            } else {
+                window.alert(result.message);
+            }
+        } catch (err) {
+            console.log(err);
+            window.alert("Something went wrong");
+        }
     };
 
     return (
@@ -66,7 +84,7 @@ const UserInfo = ({ isUser, user, setUser }) => {
                 Profile
             </Card.Header>
             <Card.Body>
-                <UserAvatar avatar={null && user.avatar} />
+                <UserAvatar avatar={true && user.avatar} />
                 <Card.Title
                     style={{
                         fontSize: "25px",
@@ -97,7 +115,7 @@ const UserInfo = ({ isUser, user, setUser }) => {
                         type="file"
                         accept="image/*"
                         ref={fileInputRef}
-                        onChange={updateAvatar}
+                        onChange={e => updateAvatar(e)}
                         style={{ display: "none" }}
                     />
                     <RegularBtn onClick={handleAvatarClick}>
