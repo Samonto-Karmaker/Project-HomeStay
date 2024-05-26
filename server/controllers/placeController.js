@@ -175,7 +175,12 @@ const getOwnerByID = async (req, res, next) => {
                 res.status(200).json({
                     success: true,
                     message: "Owner is fetched successfully",
-                    owner: owner,
+                    owner: {
+                        ...owner._doc,
+                        avatar: owner.avatar
+                            ? `${process.env.APP_URL}/images/avatars/${owner.avatar}`
+                            : null,
+                    },
                 });
             } else {
                 res.status(400).json({

@@ -84,7 +84,7 @@ const login = async (req, res, next) => {
                     name: user.name,
                     email: user.email,
                     mobile: user.mobile,
-                    avatar: `${process.env.APP_URL}/images/Avatars/${user.avatar}`,
+                    avatar: user.avatar ? `${process.env.APP_URL}/images/Avatars/${user.avatar}` : null,
                     isOwner: user.isOwner,
                 }
                 const token = jwt.sign(userObject, process.env.JWT_SECRET, {

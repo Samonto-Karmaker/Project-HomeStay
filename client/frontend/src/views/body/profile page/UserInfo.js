@@ -84,7 +84,7 @@ const UserInfo = ({ isUser, user, setUser }) => {
                 Profile
             </Card.Header>
             <Card.Body>
-                <UserAvatar avatar={true && user.avatar} />
+                <UserAvatar avatar={user.avatar} />
                 <Card.Title
                     style={{
                         fontSize: "25px",
