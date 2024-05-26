@@ -423,7 +423,7 @@ const getBookingsByPlaceId = async (req, res, next) => {
                     booking = booking.toObject();
                     booking.guestName = user.name;
                     booking.guestEmail = user.email;
-                    booking.guestAvatar = user.avatar;
+                    booking.guestAvatar = user.avatar ? `${process.env.APP_URL}/images/Avatars/${user.avatar}` : null;
                     booking.price = place.price;
                     return booking;
                 })

@@ -110,8 +110,8 @@ const ReservationHistory = ({ showModal, onHide, placeId }) => {
                                             <UserAvatar
                                                 avatar={reservation.guestAvatar}
                                                 style={{
-                                                    width: "25px",
-                                                    height: "25px",
+                                                    width: "50px",
+                                                    height: "50px",
                                                     margin: "0 10px 0 0",
                                                     border: "2px solid red",
                                                 }}
