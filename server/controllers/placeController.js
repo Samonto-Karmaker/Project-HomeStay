@@ -9,14 +9,18 @@ const pushDummyPlaces = async () => {
     try {
         const placesCount = await Places.countDocuments();
         if (placesCount === 0) {
-            await Places.insertMany(dummyPlaces);
-            console.log("Dummy data pushed successfully!");
-            for (let i = 0; i < dummyPlaces.length; i++) {
-                const owner = await Actors.findById(dummyPlaces[i].ownerId);
-                if (owner && !owner.isOwner) {
-                    owner.isOwner = true;
-                    await owner.save();
+            if (dummyPlaces && dummyPlaces.length > 0) {
+                await Places.insertMany(dummyPlaces);
+                console.log("Dummy data pushed successfully!");
+                for (let i = 0; i < dummyPlaces.length; i++) {
+                    const owner = await Actors.findById(dummyPlaces[i].ownerId);
+                    if (owner && !owner.isOwner) {
+                        owner.isOwner = true;
+                        await owner.save();
+                    }
                 }
+            } else {
+                console.log("No dummy data found to push. Please add valid dummy!");
             }
         } else {
             console.log("Places model is not empty. Skipping dummy data push.");
@@ -97,7 +101,11 @@ const getNearestUnavailableBlock = async (bookings, place) => {
         if (isBlockFound) {
             place.isNotAvailableFrom = isNotAvailableFrom;
             place.isNotAvailableTo = isNotAvailableTo;
-            if (currentDate >= isNotAvailableFrom && currentDate <= isNotAvailableTo) place.isAvailable = false;
+            if (
+                currentDate >= isNotAvailableFrom &&
+                currentDate <= isNotAvailableTo
+            )
+                place.isAvailable = false;
             await place.save();
         }
     } catch (error) {
