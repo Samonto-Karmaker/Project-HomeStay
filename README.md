@@ -4,7 +4,11 @@ Hello World! Welcome to Project HomeStay, a MERN stack web application designed 
 
 ## Overview
 
+Are you someone who wants to travel the world and meet with great peeple from various cultures? Home-stay can be a great and perheps cheaper option for you to explore not just places but people and cultures. Welcome to Project HomeStay. Here, travelers can explore a variety of home-stays, filter based on their preferences, book their stays with ease, and rate their experiences. Experience seamless booking and management with our user-friendly interface and robust notification system.
+
 Do you own amazing places and want guests from all over the world to welcome and host their vacations? No worries! We have you covered. Easily add your places here and let them get discovered by travelers for bookings. Don't worry, all bookings will only be confirmed by you. Manage your place's availability status and stay notified.
+
+Let's connect together and explore!
 
 ## Table of Contents
 
