@@ -15,6 +15,17 @@ const Body = () => {
         <Route exact path="/user/:id" element={<Profile />} />
         <Route exact path="/add-place" element={<AddPlaceForm />} />
         <Route exact path="/search-place" element={<SearchPlaceForm />} />
+        <Route path="*" element={
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+            marginTop: "5vh"
+          }}>
+            <img src="/page-not-found.jpg" alt="Page Not Found" style={{ width: "75%" }} />
+          </div>
+        } />
       </Routes>
     </div>
   );
