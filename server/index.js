@@ -8,12 +8,12 @@ const cors = require('cors');
 
 //Internal Imports
 const authRouter = require('./routes/authRouter');
-const { pushDummyPlaces, isAvailabilityStatusValid } = require('./controllers/placeController');
+const { pushDummyPlaces, isAvailabilityStatusValid } = require('./services/placeService');
 const placeRouter = require('./routes/placeRouter');
 const bookingRouter = require('./routes/bookingRouter');
 const notificationRouter = require('./routes/notificationRouter');
 const { setupSocket } = require("./socket");
-const { checkBookingStatus, checkBookingVisit } = require('./controllers/bookingController');
+const { checkBookingStatus, checkBookingVisit } = require("./services/bookingService");
 
 //Initialization
 const app = express();
