@@ -62,7 +62,7 @@ const registerValidatorHandler = (req, res, next) => {
     } else {
         console.log(mappedErrors);
         console.log(req.files);
-        if ((req.files && req, files.length > 0)) {
+        if ((req.files && req.files.length > 0)) {
             const { filename } = req.files[0];
             unlink(
                 path.join(__dirname, `/public/images/Avatars/${filename}`),
